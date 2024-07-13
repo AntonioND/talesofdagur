@@ -23,7 +23,6 @@ using namespace std;
 #include "database.h"
 #include "events.h"
 #include "Sound9.h"
-#include "fat/gba_nds_fat.h"
 
 	// Variables
 extern volatile u32 frameCounter;

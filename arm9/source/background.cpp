@@ -284,12 +284,12 @@ void updateView()
 	backgroundUpdateView((u16*)BG_MAP_RAM(25), (u16*)curLevel->upMap->mapData);
 	backgroundUpdateView((u16*)BG_MAP_RAM(28), (u16*)curLevel->downMap->mapData);
 		
-	BG0_X0 = curLevel->viewX%8;
-	BG0_Y0 = curLevel->viewY%8;
-	BG2_X0 = curLevel->viewX%8;
-	BG2_Y0 = curLevel->viewY%8;
-	BG3_X0 = curLevel->viewX%8;
-	BG3_Y0 = curLevel->viewY%8;
+	REG_BG0HOFS = curLevel->viewX%8;
+	REG_BG0VOFS = curLevel->viewY%8;
+	REG_BG2HOFS = curLevel->viewX%8;
+	REG_BG2VOFS = curLevel->viewY%8;
+	REG_BG3HOFS = curLevel->viewX%8;
+	REG_BG3VOFS = curLevel->viewY%8;
 }
 	
 void backgroundUpdateView(u16* workMap, const u16* targetMap)
@@ -318,10 +318,10 @@ void graphicInitMainMenu()
 	videoSetMode(MODE_0_2D | DISPLAY_BG0_ACTIVE | DISPLAY_BG1_ACTIVE | DISPLAY_SPR_ACTIVE | DISPLAY_SPR_1D);
 	videoSetModeSub(MODE_0_2D | DISPLAY_BG0_ACTIVE | DISPLAY_BG3_ACTIVE);
 		
-	BG0_CR	= BG_32x32 | BG_COLOR_16 | BG_MAP_BASE(31) | BG_TILE_BASE(0) | 0; // Text
-	BG1_CR	= BG_32x32 | BG_COLOR_16 | BG_MAP_BASE(30) | BG_TILE_BASE(1) | 3; // Boxs
-	SUB_BG0_CR = BG_32x32 | BG_COLOR_16 | BG_MAP_BASE(5) | BG_TILE_BASE(0) | 3; // Figure HBlank
-	SUB_BG3_CR = BG_32x32 | BG_COLOR_16 | BG_MAP_BASE(3) | BG_TILE_BASE(2) | 1; // Text Hblank
+	REG_BG0CNT	= BG_32x32 | BG_COLOR_16 | BG_MAP_BASE(31) | BG_TILE_BASE(0) | 0; // Text
+	REG_BG1CNT	= BG_32x32 | BG_COLOR_16 | BG_MAP_BASE(30) | BG_TILE_BASE(1) | 3; // Boxs
+	REG_BG0CNT_SUB = BG_32x32 | BG_COLOR_16 | BG_MAP_BASE(5) | BG_TILE_BASE(0) | 3; // Figure HBlank
+	REG_BG3CNT_SUB = BG_32x32 | BG_COLOR_16 | BG_MAP_BASE(3) | BG_TILE_BASE(2) | 1; // Text Hblank
 		
 	decompressToVRAM(textFont_bin, (void*)BG_TILE_RAM(0));
 	decompressToVRAM(mainMenuBack_bin, (void*)BG_TILE_RAM_SUB(0));
@@ -357,13 +357,13 @@ void graphicInitSplash()
 	videoSetModeSub(MODE_5_2D | DISPLAY_BG0_ACTIVE | DISPLAY_BG3_ACTIVE);
 		 
 		// Init Graphic Mode on main core									
-	BG2_CR = BG_BMP8_256x256 | BG_BMP_BASE(0) | 2;	// Flower
-	BG3_CR = BG_BMP8_256x256 | BG_BMP_BASE(4) | 0;	// Text
+	REG_BG2CNT = BG_BMP8_256x256 | BG_BMP_BASE(0) | 2;	// Flower
+	REG_BG3CNT = BG_BMP8_256x256 | BG_BMP_BASE(4) | 0;	// Text
 		// Init sub core with text
-	SUB_BG0_CR = BG_32x32 | BG_COLOR_16 | BG_MAP_BASE(31) | BG_TILE_BASE(0) | 3;
-	SUB_BG3_CR = BG_BMP8_128x128 | BG_BMP_BASE(2);
-	SUB_BG3_XDX = 1<<8; SUB_BG3_XDY = 0;
-	SUB_BG3_YDX = 0; SUB_BG3_YDY = 1<<8;
+	REG_BG0CNT_SUB = BG_32x32 | BG_COLOR_16 | BG_MAP_BASE(31) | BG_TILE_BASE(0) | 3;
+	REG_BG3CNT_SUB = BG_BMP8_128x128 | BG_BMP_BASE(2);
+	REG_BG3PA = 1<<8; REG_BG3PB = 0;
+	REG_BG3PC = 0; REG_BG3PD = 1<<8;
 		// Copy the text & setup the palette
 	BG_PALETTE_SUB[0] = RGB15(31, 31, 31);
 	BG_PALETTE_SUB[1] = RGB15(25, 0, 0);
@@ -387,7 +387,7 @@ void graphicInitGOver()
 	videoSetModeSub(MODE_0_2D | DISPLAY_BG0_ACTIVE);
 		
 		// Init Graphic Mode on sub core
-	SUB_BG0_CR = BG_32x32 | BG_COLOR_16 | BG_MAP_BASE(31) | BG_TILE_BASE(0) | 1;
+	REG_BG0CNT_SUB = BG_32x32 | BG_COLOR_16 | BG_MAP_BASE(31) | BG_TILE_BASE(0) | 1;
 }
 
 void graphicInitGame()
@@ -397,15 +397,15 @@ void graphicInitGame()
 	videoSetModeSub(MODE_0_2D | DISPLAY_BG0_ACTIVE | DISPLAY_BG1_ACTIVE | DISPLAY_BG2_ACTIVE | DISPLAY_BG3_ACTIVE | DISPLAY_SPR_1D | DISPLAY_SPR_ACTIVE);
 		
 		// Init Graphic Mode on main core									
-	BG0_CR = BG_64x32 | BG_COLOR_256 | BG_MAP_BASE(28) | BG_TILE_BASE(5) | 3; // Down
-	BG2_CR = BG_64x32 | BG_COLOR_256 | BG_MAP_BASE(25) | BG_TILE_BASE(10)| 0; // Up
-	BG3_CR = BG_64x32 | BG_COLOR_256 | BG_MAP_BASE(31) | BG_TILE_BASE(0) | 3; // Ground
+	REG_BG0CNT = BG_64x32 | BG_COLOR_256 | BG_MAP_BASE(28) | BG_TILE_BASE(5) | 3; // Down
+	REG_BG2CNT = BG_64x32 | BG_COLOR_256 | BG_MAP_BASE(25) | BG_TILE_BASE(10)| 0; // Up
+	REG_BG3CNT = BG_64x32 | BG_COLOR_256 | BG_MAP_BASE(31) | BG_TILE_BASE(0) | 3; // Ground
 		
 		// Init Graphic Mode on sub core
-	SUB_BG0_CR = BG_32x32 | BG_COLOR_16 | BG_MAP_BASE(2) | BG_TILE_BASE(0) | 1;	// TextBox
-	SUB_BG1_CR = BG_32x32 | BG_COLOR_16 | BG_MAP_BASE(3) | BG_TILE_BASE(1) | 2;	// Text lower
-	SUB_BG2_CR = BG_32x32 | BG_COLOR_16 | BG_MAP_BASE(4) | BG_TILE_BASE(1) | 0;	// Text upper
-	SUB_BG3_CR = BG_32x32 | BG_COLOR_16 | BG_MAP_BASE(5) | BG_TILE_BASE(0) | 3;	// Main Screen
+	REG_BG0CNT_SUB = BG_32x32 | BG_COLOR_16 | BG_MAP_BASE(2) | BG_TILE_BASE(0) | 1;	// TextBox
+	REG_BG1CNT_SUB = BG_32x32 | BG_COLOR_16 | BG_MAP_BASE(3) | BG_TILE_BASE(1) | 2;	// Text lower
+	REG_BG2CNT_SUB = BG_32x32 | BG_COLOR_16 | BG_MAP_BASE(4) | BG_TILE_BASE(1) | 0;	// Text upper
+	REG_BG3CNT_SUB = BG_32x32 | BG_COLOR_16 | BG_MAP_BASE(5) | BG_TILE_BASE(0) | 3;	// Main Screen
 }
 
 void initGauge(pGauge workGauge, int posX, int posY, int gRate)
@@ -500,10 +500,10 @@ void graphicInitBattle()
 		//Set to MODE0 and Sprites
 	videoSetMode(MODE_0_2D | DISPLAY_BG0_ACTIVE | DISPLAY_BG1_ACTIVE | DISPLAY_SPR_1D | DISPLAY_SPR_ACTIVE);
 		// Init BG0
-	BG0_CR = BG_32x32 | BG_COLOR_256 | BG_MAP_BASE(31) | BG_TILE_BASE(0) | 3; // Battle Image
-	BG0_X0 = 0; BG0_Y0 = 0;
+	REG_BG0CNT = BG_32x32 | BG_COLOR_256 | BG_MAP_BASE(31) | BG_TILE_BASE(0) | 3; // Battle Image
+	REG_BG0HOFS = 0; REG_BG0VOFS = 0;
 		
-	BG1_CR = BG_32x32 | BG_COLOR_16 | BG_MAP_BASE(25) | BG_TILE_BASE(6); // Text
+	REG_BG1CNT = BG_32x32 | BG_COLOR_16 | BG_MAP_BASE(25) | BG_TILE_BASE(6); // Text
 	decompressToVRAM(textFont_bin, (void*)BG_TILE_RAM(6));
 	BG_PALETTE[17] = RGB15(0, 20, 7); BG_PALETTE[18] = RGB15(0, 0, 0); 
 	BG_PALETTE[33] = RGB15(31, 31, 31); BG_PALETTE[34] = RGB15(0, 0, 0);
@@ -719,23 +719,27 @@ bool saveGame(int saveSlot)
 	for(int i=0; i<21; ++i)
 		gameData.workingChests[i] = chestFigure[i].isOpen;
 		
-	sprintf(gameData.saveName, "%s \2Lvl%d\2 \3%d%%%%\3 \4%02d:%02d\4", curPlayer->figName.c_str(), curPlayer->Attr[LEVEL], (((gameValues.curEvent - 1) / 2) * 99) / STORY_SIZE, gameValues.timePlayed / 60, gameValues.timePlayed % 60);
+	sprintf(gameData.saveName, "%s \2Lvl%ld\2 \3%d%%%%\3 \4%02lu:%02lu\4", curPlayer->figName.c_str(), curPlayer->Attr[LEVEL], (((gameValues.curEvent - 1) / 2) * 99) / STORY_SIZE, gameValues.timePlayed / 60, gameValues.timePlayed % 60);
 		
 	memcpy(&gameValues.saveSlots[saveSlot], &gameData, sizeof(saveData));
 	gameData.isLoaded = true;
 		
 	if(gameValues.isFAT) {
 		string fileName = "ToD" + itoa(saveSlot, 10) + ".sav";
-		FAT_FILE* outputBuffer = FAT_fopen(fileName.c_str(), "w");
+		FILE* outputBuffer = fopen(fileName.c_str(), "w");
 		if(!outputBuffer)
 			return false;
-		if(!FAT_fwrite(&gameData, sizeof(saveData), 1, outputBuffer))
+		if(!fwrite(&gameData, sizeof(saveData), 1, outputBuffer))
 			return false;
-		if(!FAT_fclose(outputBuffer))
+		if(!fclose(outputBuffer))
 			return false;
-			
-		if(FAT_FileExists(fileName.c_str()) != FT_NONE)
-			return true;
+
+		// Check if file exists
+		outputBuffer = fopen(fileName.c_str(), "r");
+		if (outputBuffer == NULL)
+			return false;
+		fclose(outputBuffer);
+		return false;
 	} else 
 		writeSRAM((u8*)&gameData, sizeof(saveData) * saveSlot, sizeof(saveData));
 		
@@ -746,14 +750,14 @@ bool loadSavedGame(int saveSlot, pSaveData gameData)
 {
 	if(gameValues.isFAT) {
 		string fileName = "ToD" + itoa(saveSlot, 10) + ".sav";
-		FAT_FILE* outputBuffer = FAT_fopen(fileName.c_str(), "r");
+		FILE* outputBuffer = fopen(fileName.c_str(), "r");
 		if(!outputBuffer)
 			return false;
 			
-		if(!FAT_fread(gameData, sizeof(saveData), 1, outputBuffer))
+		if(!fread(gameData, sizeof(saveData), 1, outputBuffer))
 			return false;
 			
-		if(!FAT_fclose(outputBuffer))
+		if(!fclose(outputBuffer))
 			return false;
 			
 		if(gameData->isLoaded)

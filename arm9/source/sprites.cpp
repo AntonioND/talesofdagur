@@ -79,8 +79,8 @@ void moveSprite(pSpriteEntry sp, u16 x, u16 y)
 	// Rotates a Sprite (I Hate math (¬¬))
 void rotateSprite(pSpriteRotation rotdata, u16 angle)
 {
-	s16 s = -SIN[angle & 0x1FF] >> 4;
-	s16 c =  COS[angle & 0x1FF] >> 4;
+	s16 s = -sinLerp(64 * (angle & 0x1FF)) >> 4;
+	s16 c =  cosLerp(64 * (angle & 0x1FF)) >> 4;
 		
 	rotdata->hdx =  c;
 	rotdata->hdy = -s;
@@ -100,8 +100,8 @@ void zoomSprite(pSpriteRotation rotdata, u16 z)
 	// Rotates THEN scale sprite (No, you can't use the two functions together)
 void rotScaleSprite(pSpriteRotation rotdata, u16 angle, u16 z)
 {
-	s16 s = -SIN[angle & 0x1FF] >> 4;
-	s16 c =  COS[angle & 0x1FF] >> 4;
+	s16 s = -sinLerp(64 * (angle & 0x1FF)) >> 4;
+	s16 c =  cosLerp(64 * (angle & 0x1FF)) >> 4;
 		
 	rotdata->hdx = ( c * z ) >> 8;
 	rotdata->hdy = (-s * z ) >> 8;
@@ -160,7 +160,7 @@ void initFigure(const char* selName, pFigure theFigure, spriteData allData, Pale
 		
 	theFigure->lowerSprite->attribute[0] = ATTR0_WIDE | ATTR0_COLOR_16;
 	theFigure->lowerSprite->attribute[1] = ATTR1_SIZE_32;
-	theFigure->lowerSprite->attribute[2] = ATTR2_PALETTE(palOffset) | dataOffset+16;
+	theFigure->lowerSprite->attribute[2] = ATTR2_PALETTE(palOffset) | (dataOffset+16);
 		
 	theFigure->allData = allData;
 	theFigure->palData = palData;
@@ -227,7 +227,7 @@ void enableFigure(pFigure theFigure)
 		
 	theFigure->lowerSprite->attribute[0] = ATTR0_WIDE | ATTR0_COLOR_16;
 	theFigure->lowerSprite->attribute[1] = ATTR1_SIZE_32;
-	theFigure->lowerSprite->attribute[2] = ATTR2_PALETTE(palOffset) | dataOffset+16;
+	theFigure->lowerSprite->attribute[2] = ATTR2_PALETTE(palOffset) | (dataOffset+16);
 		
 	theFigure->isEnabled = true;
 	updateFigure(theFigure);
@@ -304,21 +304,22 @@ bool advanceFigure(pFigure tFigure)
 	moveData movData = tFigure->movQue.front();
 		
 	int deltax, deltay;
-	int d, dinc1, dinc2;
+	int d;
+	// int dinc1, dinc2;
 	int xinc1, xinc2;
 	int yinc1, yinc2;
 	deltax = abs(movData.destX - tFigure->posX);
 	deltay = abs(movData.destY - tFigure->posY);
 	if(deltax >= deltay) {
 		d = (2 * deltay) - deltax;
-		dinc1 = deltay << 1;
-		dinc2 = (deltay - deltax) << 1;
+		//dinc1 = deltay << 1;
+		//dinc2 = (deltay - deltax) << 1;
 		xinc1 = xinc2 = yinc2 = 1;
 		yinc1 = 0;
 	} else {
 		d = (2 * deltax) - deltay;
-		dinc1 = deltax << 1;
-		dinc2 = (deltax - deltay) << 1;
+		//dinc1 = deltax << 1;
+		//dinc2 = (deltax - deltay) << 1;
 		xinc1 = 0;
 		xinc2 = yinc1 = yinc2 = 1;
 	}

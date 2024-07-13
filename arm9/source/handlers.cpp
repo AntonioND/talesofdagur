@@ -3,31 +3,31 @@
 void handleSplash()
 {
 	gameValues.flowerAngle += 3;
-	s16 s = SIN[gameValues.flowerAngle & 0x1FF] >> 4;
-	s16 c = COS[gameValues.flowerAngle & 0x1FF] >> 4;
-	BG2_XDX = c;	BG2_XDY = -s;
-	BG2_YDX = s;	BG2_YDY = c;
-	BG2_CX = (127<<8) - (192-16) * (c - s);
-	BG2_CY = (102<<8) - (192-16) * (s + c);
+	s16 s = sinLerp(64 * (gameValues.flowerAngle & 0x1FF)) >> 4;
+	s16 c = cosLerp(64 * (gameValues.flowerAngle & 0x1FF)) >> 4;
+	REG_BG2PA = c;	REG_BG2PB = -s;
+	REG_BG2PC = s;	REG_BG2PD = c;
+	REG_BG2X = (127<<8) - (192-16) * (c - s);
+	REG_BG2Y = (102<<8) - (192-16) * (s + c);
 		
 	gameValues.textZoom += 3;
-	s32 tempAngle = SIN[gameValues.textZoom & 0x1FF] >> 8;
-	s = SIN[ tempAngle & 0x1FF ] >> 4;
-	c = COS[ tempAngle & 0x1FF ] >> 4;
-	BG3_XDX =  c;
-	BG3_XDY = -s;
-	BG3_YDX =  s;
-	BG3_YDY =  c;
-	BG3_CX = (128<<8) - 128 * (c - s);
-	BG3_CY = (128<<8) - 128 * (s + c);
+	s32 tempAngle = sinLerp(64 * (gameValues.textZoom & 0x1FF)) >> 8;
+	s = sinLerp(64 * (tempAngle & 0x1FF)) >> 4;
+	c = cosLerp(64 * (tempAngle & 0x1FF)) >> 4;
+	REG_BG3PA =  c;
+	REG_BG3PB = -s;
+	REG_BG3PC =  s;
+	REG_BG3PD =  c;
+	REG_BG3X = (128<<8) - 128 * (c - s);
+	REG_BG3Y = (128<<8) - 128 * (s + c);
 		
-	tempAngle = SIN[100] >> 8;
-	s = SIN[ tempAngle & 0x1FF ] >> 4;
-	c = COS[ tempAngle & 0x1FF ] >> 4;
-	SUB_BG3_XDX =  c;
-	SUB_BG3_XDY = -s;
-	SUB_BG3_YDX =  s;
-	SUB_BG3_YDY =  c;
+	tempAngle = sinLerp(64 * 100) >> 8;
+	s = sinLerp(64 * (tempAngle & 0x1FF)) >> 4;
+	c = cosLerp(64 * (tempAngle & 0x1FF)) >> 4;
+	REG_BG3PA_SUB =  c;
+	REG_BG3PB_SUB = -s;
+	REG_BG3PC_SUB =  s;
+	REG_BG3PD_SUB =  c;
 }
 
 void handleEffects()
@@ -37,10 +37,10 @@ void handleEffects()
 	switch(gameValues.curMode) {
 		case LEVELMODE_SPLASH_FADEIN:
 				handleSplash();
-				BLEND_CR = BLEND_FADE_WHITE | BLEND_SRC_SPRITE | BLEND_SRC_BG0 | BLEND_SRC_BG2 | BLEND_SRC_BG3 | BLEND_DST_BACKDROP;
-				BLEND_Y  = gameValues.fadeVal | gameValues.fadeVal<<8;
-				SUB_BLEND_CR = BLEND_FADE_WHITE | BLEND_SRC_SPRITE | BLEND_SRC_BG0 | BLEND_SRC_BG2 | BLEND_SRC_BG3 | BLEND_DST_BACKDROP;
-				SUB_BLEND_Y  = gameValues.fadeVal | gameValues.fadeVal<<8;
+				REG_BLDCNT = BLEND_FADE_WHITE | BLEND_SRC_SPRITE | BLEND_SRC_BG0 | BLEND_SRC_BG2 | BLEND_SRC_BG3 | BLEND_DST_BACKDROP;
+				REG_BLDY = gameValues.fadeVal | gameValues.fadeVal<<8;
+				REG_BLDCNT_SUB = BLEND_FADE_WHITE | BLEND_SRC_SPRITE | BLEND_SRC_BG0 | BLEND_SRC_BG2 | BLEND_SRC_BG3 | BLEND_DST_BACKDROP;
+				REG_BLDY_SUB = gameValues.fadeVal | gameValues.fadeVal<<8;
 				SoundSendCmd(SND_CMD_SETVOLUME, 127 - (gameValues.fadeVal * 8));
 				if(--gameValues.tickVal < 0) {
 					gameValues.tickVal = 4;
@@ -58,10 +58,10 @@ void handleEffects()
 			break;
 		case LEVELMODE_SPLASH_FADEOUT:
 				handleSplash();
-				BLEND_CR = BLEND_FADE_WHITE | BLEND_SRC_SPRITE | BLEND_SRC_BG0 | BLEND_SRC_BG2 | BLEND_SRC_BG3 | BLEND_DST_BACKDROP;
-				BLEND_Y  = gameValues.fadeVal | gameValues.fadeVal<<8;
-				SUB_BLEND_CR = BLEND_FADE_WHITE | BLEND_SRC_SPRITE | BLEND_SRC_BG0 | BLEND_SRC_BG2 | BLEND_SRC_BG3 | BLEND_DST_BACKDROP;
-				SUB_BLEND_Y  = gameValues.fadeVal | gameValues.fadeVal<<8;
+				REG_BLDCNT = BLEND_FADE_WHITE | BLEND_SRC_SPRITE | BLEND_SRC_BG0 | BLEND_SRC_BG2 | BLEND_SRC_BG3 | BLEND_DST_BACKDROP;
+				REG_BLDY = gameValues.fadeVal | gameValues.fadeVal<<8;
+				REG_BLDCNT_SUB = BLEND_FADE_WHITE | BLEND_SRC_SPRITE | BLEND_SRC_BG0 | BLEND_SRC_BG2 | BLEND_SRC_BG3 | BLEND_DST_BACKDROP;
+				REG_BLDY_SUB = gameValues.fadeVal | gameValues.fadeVal<<8;
 				SoundSendCmd(SND_CMD_SETVOLUME, 127 - (gameValues.fadeVal * 8));
 				if(--gameValues.tickVal < 0) {
 					gameValues.tickVal = 4;
@@ -75,10 +75,10 @@ void handleEffects()
 				}
 			break;
 		case LEVELMODE_MENU_FADEIN:
-				BLEND_CR = BLEND_FADE_WHITE | BLEND_SRC_SPRITE | BLEND_SRC_BG0 | BLEND_SRC_BG2 | BLEND_SRC_BG3 | BLEND_DST_BACKDROP;
-				SUB_BLEND_CR = BLEND_FADE_WHITE | BLEND_SRC_SPRITE | BLEND_SRC_BG0 | BLEND_SRC_BG2 | BLEND_SRC_BG3 | BLEND_DST_BACKDROP;
-				BLEND_Y  = gameValues.fadeVal | gameValues.fadeVal<<8;
-				SUB_BLEND_Y  = gameValues.fadeVal | gameValues.fadeVal<<8;
+				REG_BLDCNT = BLEND_FADE_WHITE | BLEND_SRC_SPRITE | BLEND_SRC_BG0 | BLEND_SRC_BG2 | BLEND_SRC_BG3 | BLEND_DST_BACKDROP;
+				REG_BLDCNT_SUB = BLEND_FADE_WHITE | BLEND_SRC_SPRITE | BLEND_SRC_BG0 | BLEND_SRC_BG2 | BLEND_SRC_BG3 | BLEND_DST_BACKDROP;
+				REG_BLDY = gameValues.fadeVal | gameValues.fadeVal<<8;
+				REG_BLDY_SUB = gameValues.fadeVal | gameValues.fadeVal<<8;
 				if(--gameValues.tickVal < 0) {
 					gameValues.tickVal = 5;
 					--gameValues.fadeVal;
@@ -175,12 +175,12 @@ void handleEffects()
 				}
 			break;
 		case LEVELMODE_INGAME_MENU:	
-				BLEND_CR = BLEND_FADE_BLACK | BLEND_SRC_SPRITE | BLEND_SRC_BG0 | BLEND_SRC_BG2 | BLEND_SRC_BG3 | BLEND_DST_BACKDROP;
-				BLEND_Y  = 8 | 8<<8;
+				REG_BLDCNT = BLEND_FADE_BLACK | BLEND_SRC_SPRITE | BLEND_SRC_BG0 | BLEND_SRC_BG2 | BLEND_SRC_BG3 | BLEND_DST_BACKDROP;
+				REG_BLDY = 8 | 8<<8;
 			break;
 		case LEVELMODE_FADEOUT:
-				BLEND_CR = BLEND_FADE_BLACK | BLEND_SRC_SPRITE | BLEND_SRC_BG0 | BLEND_SRC_BG2 | BLEND_SRC_BG3 | BLEND_DST_BACKDROP;
-				BLEND_Y  = gameValues.fadeVal | gameValues.fadeVal<<8;
+				REG_BLDCNT = BLEND_FADE_BLACK | BLEND_SRC_SPRITE | BLEND_SRC_BG0 | BLEND_SRC_BG2 | BLEND_SRC_BG3 | BLEND_DST_BACKDROP;
+				REG_BLDY = gameValues.fadeVal | gameValues.fadeVal<<8;
 				if(sndControl->toFade)
 					SoundSendCmd(SND_CMD_SETVOLUME, 127 - (gameValues.fadeVal * 8));
 				if(--gameValues.tickVal < 0) {
@@ -200,8 +200,8 @@ void handleEffects()
 				gameValues.curMode = LEVELMODE_FADEIN;
 			break;
 		case LEVELMODE_FADEIN:
-				BLEND_CR = BLEND_FADE_BLACK | BLEND_SRC_SPRITE | BLEND_SRC_BG0 | BLEND_SRC_BG2 | BLEND_SRC_BG3 | BLEND_DST_BACKDROP;
-				BLEND_Y  = gameValues.fadeVal | gameValues.fadeVal<<8;
+				REG_BLDCNT = BLEND_FADE_BLACK | BLEND_SRC_SPRITE | BLEND_SRC_BG0 | BLEND_SRC_BG2 | BLEND_SRC_BG3 | BLEND_DST_BACKDROP;
+				REG_BLDY = gameValues.fadeVal | gameValues.fadeVal<<8;
 				if(--gameValues.tickVal < 0) {
 					gameValues.tickVal = 2;
 					gameValues.fadeVal--;
@@ -214,8 +214,8 @@ void handleEffects()
 			break;
 		case LEVELMODE_BATTLE_FADEIN:	
 				gameValues.isFade = true;
-				BLEND_CR = BLEND_FADE_WHITE | BLEND_SRC_SPRITE | BLEND_SRC_BG0 | BLEND_SRC_BG2 | BLEND_SRC_BG3 | BLEND_DST_BACKDROP;
-				BLEND_Y  = gameValues.fadeVal | gameValues.fadeVal<<8;
+				REG_BLDCNT = BLEND_FADE_WHITE | BLEND_SRC_SPRITE | BLEND_SRC_BG0 | BLEND_SRC_BG2 | BLEND_SRC_BG3 | BLEND_DST_BACKDROP;
+				REG_BLDY = gameValues.fadeVal | gameValues.fadeVal<<8;
 				SoundSendCmd(SND_CMD_SETVOLUME, 127 - (gameValues.fadeVal * 8));
 				if(--gameValues.tickVal < 0) {
 					gameValues.tickVal = 2;
@@ -232,8 +232,8 @@ void handleEffects()
 					gameValues.curMode = LEVELMODE_BATTLE_FADEOUT;
 			break;
 		case LEVELMODE_BATTLE_FADEOUT:	
-				BLEND_CR = BLEND_FADE_WHITE | BLEND_SRC_SPRITE | BLEND_SRC_BG0 | BLEND_SRC_BG2 | BLEND_SRC_BG3 | BLEND_DST_BACKDROP;
-				BLEND_Y  = gameValues.fadeVal | gameValues.fadeVal<<8;
+				REG_BLDCNT = BLEND_FADE_WHITE | BLEND_SRC_SPRITE | BLEND_SRC_BG0 | BLEND_SRC_BG2 | BLEND_SRC_BG3 | BLEND_DST_BACKDROP;
+				REG_BLDY = gameValues.fadeVal | gameValues.fadeVal<<8;
 				SoundSendCmd(SND_CMD_SETVOLUME, 127 - (gameValues.fadeVal * 8));
 				if(--gameValues.tickVal < 0) {
 					gameValues.tickVal = 2;
@@ -251,8 +251,8 @@ void handleEffects()
 				
 			break;
 		case LEVELMODE_EXITBATTLE:
-				BLEND_CR = BLEND_FADE_BLACK | BLEND_SRC_SPRITE | BLEND_SRC_BG0 | BLEND_SRC_BG2 | BLEND_SRC_BG3 | BLEND_DST_BACKDROP;
-				BLEND_Y  = gameValues.fadeVal | gameValues.fadeVal<<8;
+				REG_BLDCNT = BLEND_FADE_BLACK | BLEND_SRC_SPRITE | BLEND_SRC_BG0 | BLEND_SRC_BG2 | BLEND_SRC_BG3 | BLEND_DST_BACKDROP;
+				REG_BLDY = gameValues.fadeVal | gameValues.fadeVal<<8;
 				SoundSendCmd(SND_CMD_SETVOLUME, 127 - (gameValues.fadeVal * 8));
 				if(--gameValues.tickVal < 0) {
 					gameValues.tickVal = 2;
@@ -268,10 +268,10 @@ void handleEffects()
 				}
 			break;
 		case LEVELMODE_GAMEOVER_FADEIN:
-				BLEND_CR = BLEND_FADE_BLACK | BLEND_SRC_SPRITE | BLEND_SRC_BG0 | BLEND_SRC_BG1 | BLEND_SRC_BG2 | BLEND_SRC_BG3 | BLEND_DST_BACKDROP;
-				BLEND_Y  = gameValues.fadeVal | gameValues.fadeVal<<8;
-				SUB_BLEND_CR = BLEND_FADE_BLACK | BLEND_SRC_SPRITE | BLEND_SRC_BG0 | BLEND_SRC_BG1 | BLEND_SRC_BG2 | BLEND_SRC_BG3 | BLEND_DST_BACKDROP;
-				SUB_BLEND_Y  = gameValues.fadeVal | gameValues.fadeVal<<8;
+				REG_BLDCNT = BLEND_FADE_BLACK | BLEND_SRC_SPRITE | BLEND_SRC_BG0 | BLEND_SRC_BG1 | BLEND_SRC_BG2 | BLEND_SRC_BG3 | BLEND_DST_BACKDROP;
+				REG_BLDY = gameValues.fadeVal | gameValues.fadeVal<<8;
+				REG_BLDCNT_SUB = BLEND_FADE_BLACK | BLEND_SRC_SPRITE | BLEND_SRC_BG0 | BLEND_SRC_BG1 | BLEND_SRC_BG2 | BLEND_SRC_BG3 | BLEND_DST_BACKDROP;
+				REG_BLDY_SUB = gameValues.fadeVal | gameValues.fadeVal<<8;
 				SoundSendCmd(SND_CMD_SETVOLUME, 127 - (gameValues.fadeVal * 8));
 				BG_PALETTE_SUB[0] = BG_PALETTE[0] = 0;
 				if(--gameValues.tickVal < 0) {
@@ -285,10 +285,10 @@ void handleEffects()
 				}
 			break;
 		case LEVELMODE_GAMEOVER_FADEOUT:
-				BLEND_CR = BLEND_FADE_BLACK | BLEND_SRC_SPRITE | BLEND_SRC_BG0 | BLEND_SRC_BG1 | BLEND_SRC_BG2 | BLEND_SRC_BG3 | BLEND_DST_BACKDROP;
-				BLEND_Y  = gameValues.fadeVal | gameValues.fadeVal<<8;
-				SUB_BLEND_CR = BLEND_FADE_BLACK | BLEND_SRC_SPRITE | BLEND_SRC_BG0 | BLEND_SRC_BG1 | BLEND_SRC_BG2 | BLEND_SRC_BG3 | BLEND_DST_BACKDROP;
-				SUB_BLEND_Y  = gameValues.fadeVal | gameValues.fadeVal<<8;
+				REG_BLDCNT = BLEND_FADE_BLACK | BLEND_SRC_SPRITE | BLEND_SRC_BG0 | BLEND_SRC_BG1 | BLEND_SRC_BG2 | BLEND_SRC_BG3 | BLEND_DST_BACKDROP;
+				REG_BLDY = gameValues.fadeVal | gameValues.fadeVal<<8;
+				REG_BLDCNT_SUB = BLEND_FADE_BLACK | BLEND_SRC_SPRITE | BLEND_SRC_BG0 | BLEND_SRC_BG1 | BLEND_SRC_BG2 | BLEND_SRC_BG3 | BLEND_DST_BACKDROP;
+				REG_BLDY_SUB = gameValues.fadeVal | gameValues.fadeVal<<8;
 				SoundSendCmd(SND_CMD_SETVOLUME, 127 - (gameValues.fadeVal * 8));
 				if(--gameValues.tickVal < 0) {
 					gameValues.tickVal = 2;
@@ -303,10 +303,10 @@ void handleEffects()
 		case LEVELMODE_GAMEOVER:
 			break;
 		case LEVELMODE_GAMEOVER_WHITEFADE:
-				BLEND_CR = BLEND_FADE_WHITE | BLEND_SRC_SPRITE | BLEND_SRC_BG0 | BLEND_SRC_BG2 | BLEND_SRC_BG3 | BLEND_DST_BACKDROP;
-				BLEND_Y  = gameValues.fadeVal | gameValues.fadeVal<<8;
-				SUB_BLEND_CR = BLEND_FADE_WHITE | BLEND_SRC_SPRITE | BLEND_SRC_BG0 | BLEND_SRC_BG2 | BLEND_SRC_BG3 | BLEND_DST_BACKDROP;
-				SUB_BLEND_Y  = gameValues.fadeVal | gameValues.fadeVal<<8;
+				REG_BLDCNT = BLEND_FADE_WHITE | BLEND_SRC_SPRITE | BLEND_SRC_BG0 | BLEND_SRC_BG2 | BLEND_SRC_BG3 | BLEND_DST_BACKDROP;
+				REG_BLDY = gameValues.fadeVal | gameValues.fadeVal<<8;
+				REG_BLDCNT_SUB = BLEND_FADE_WHITE | BLEND_SRC_SPRITE | BLEND_SRC_BG0 | BLEND_SRC_BG2 | BLEND_SRC_BG3 | BLEND_DST_BACKDROP;
+				REG_BLDY_SUB = gameValues.fadeVal | gameValues.fadeVal<<8;
 				SoundSendCmd(SND_CMD_SETVOLUME, 127 - (gameValues.fadeVal * 8));
 				BG_PALETTE_SUB[0] = BG_PALETTE[0] = RGB15(gameValues.fadeVal*2, gameValues.fadeVal*2, gameValues.fadeVal*2);
 				if(--gameValues.tickVal < 0) {
@@ -661,7 +661,7 @@ void handleKeys()
 					for(int i=0; i<32*32; i++) ((u16*)BG_MAP_RAM_SUB(2))[i] = 9;
 					drawRectTop(0, 0, 32, 7);
 					textVars.virtualPosY = 19;
-					BLEND_CR = 0; // Remove blending
+					REG_BLDCNT = 0; // Remove blending
 					SoundSendCmd(SND_CMD_SETVOLUME, 127);
 					gameValues.curMode = LEVELMODE_PLAY;
 				}
@@ -791,7 +791,7 @@ void handleInGameMenuChoice()
 					hideSprite(textVars.cursorSprite, true);
 					for(int i=0; i<32*32; i++) ((u16*)BG_MAP_RAM_SUB(2))[i] = 9;
 					drawRectTop(0, 0, 32, 7);
-					BLEND_CR = 0;
+					REG_BLDCNT = 0;
 					textVars.virtualPosY = 19;
 					textVars.txtPos = 0;
 					SoundSendCmd(SND_CMD_SETVOLUME, 127);
@@ -1198,7 +1198,7 @@ void handleEvents()
 		case EVENT_CUSTOM:
 			if( ((boolFuncPtr)curEvent->eventParam)() )
 				++gameValues.curEvent;
-				break;
+			break;
 		case EVENT_BATTLE:
 			memcpy(&battleValues.curMonster, &monsterDB[(int)curEvent->eventParam], sizeof(Monster));
 			battleValues.curMonster.mnsSpr = &spritesMain[127];
@@ -1489,7 +1489,7 @@ void handleBattle()
 {
 	switch(battleValues.curMode) {
 		case BATTLE_GAUGESFILLS:
-				BG1_Y0 = 0;
+				REG_BG1VOFS = 0;
 				battleValues.isSet = false;
 				printIndicatorName(17, 19, curPlayer->figName.c_str(), curPlayer->Attr[HP], curPlayer->Attr[MAX_HP]);
 				printIndicatorName(1, 19, battleValues.curMonster.name, battleValues.curMonster.Attr[HP], battleValues.curMonster.Attr[MAX_HP]);
@@ -1555,9 +1555,9 @@ void handleBattle()
 					battleValues.isSet = true;
 				}
 				if(!battleValues.animTick--) {
-					BG1_Y0 = battleValues.animIdx++;
+					REG_BG1VOFS = battleValues.animIdx++;
 					if(battleValues.animIdx > 8) {
-						BG1_Y0 = battleValues.animIdx = 0;
+						REG_BG1VOFS = battleValues.animIdx = 0;
 						clearTextOn((u16*)BG_MAP_RAM(25), 8, 8, 10, 1);
 						battleValues.curMonster.Attr[HP] -= battleValues.hpDec;
 						battleValues.isSet = false;
@@ -1577,7 +1577,7 @@ void handleBattle()
 		case BATTLE_SHOWRESULT_MONSTER:
 				textPutOn(false, (u16*)BG_MAP_RAM(25), 26, 14, "\2%d\2", battleValues.hpDec);
 				if(!battleValues.animTick--) {
-					BG1_Y0 = battleValues.animIdx++;
+					REG_BG1VOFS = battleValues.animIdx++;
 					if(battleValues.animIdx > 8) {
 						battleValues.animIdx = 0;
 						curPlayer->Attr[HP] -= battleValues.hpDec;
@@ -1634,8 +1634,8 @@ void handleBattle()
 					hideSprite(battleValues.mnsGuage.indSpr, true);
 					hideSprite(battleValues.playerG.indSpr, true);
 					SoundSendCmd(SND_CMD_SETVOLUME, 127);
-					BLEND_CR = BLEND_FADE_BLACK | BLEND_SRC_SPRITE | BLEND_SRC_BG0 | BLEND_SRC_BG2 | BLEND_SRC_BG3 | BLEND_DST_BACKDROP;
-					BLEND_Y  = 8 | 8<<8;	// 50/50 Blend with black
+					REG_BLDCNT = BLEND_FADE_BLACK | BLEND_SRC_SPRITE | BLEND_SRC_BG0 | BLEND_SRC_BG2 | BLEND_SRC_BG3 | BLEND_DST_BACKDROP;
+					REG_BLDY = 8 | 8<<8;	// 50/50 Blend with black
 					battleValues.isSet = false;
 					textVars.curMode = TEXTMODE_WINDOW_DIRDOWN;
 				}

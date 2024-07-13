@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include "text.h"
 		
 textVar textVars;
@@ -156,18 +158,18 @@ void initText()
 	textVars.cursorSpriteMain->attribute[2] = ATTR2_PALETTE(15) | 1000;
 		
 	textVars.emblemFigure->attribute[0] = ATTR0_NORMAL | ATTR0_COLOR_256 | 8;
-	textVars.emblemFigure->attribute[1] = ATTR1_SIZE_64 | 8+2;
+	textVars.emblemFigure->attribute[1] = ATTR1_SIZE_64 | (8+2);
 	textVars.emblemFigure->attribute[2] = 8 | ATTR2_PRIORITY(2);
 		
 	hideSprite(textVars.aButton, true);
 	hideSprite(textVars.cursorSprite, true);
 	hideSprite(textVars.cursorSpriteMain, true);
 		
-	SUB_BG1_X0 = 256-5;
-	SUB_BG1_Y0 = 256-5;
-	SUB_BG2_X0 = 2;
-	SUB_BG2_Y0 = 5;
-	SUB_BG3_Y0 = 256-2;
+	REG_BG1HOFS_SUB = 256-5;
+	REG_BG1VOFS_SUB = 256-5;
+	REG_BG2HOFS_SUB = 2;
+	REG_BG2VOFS_SUB = 5;
+	REG_BG3VOFS_SUB = 256-2;
 		
 		// Menus
 	textVars.curMenu = &textVars.smallMenu;
@@ -194,7 +196,7 @@ void textHandleVBlank()
 		case LEVELMODE_MENU_START:
 		case LEVELMODE_MENU_CHOICE:
 		case LEVELMODE_MENU_LOAD:
-			SUB_BG0_Y0 = 256-10;
+			REG_BG0VOFS_SUB = 256-10;
 				return;
 		case LEVELMODE_INTRO:
 		case LEVELMODE_PLAY:
@@ -222,7 +224,7 @@ void textHandleVBlank()
 	}
 		
 	const int spriteX = 256-16+4, spriteY = 192-16+4;
-	SUB_BG0_Y0 = 256-(192-52)-textVars.scroolY;
+	REG_BG0VOFS_SUB = 256-(192-52)-textVars.scroolY;
 		
 	string tempStr;
 		

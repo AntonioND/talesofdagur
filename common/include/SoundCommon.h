@@ -76,8 +76,11 @@ typedef struct _SND_CONTROL
 
 // ----- Global variables -----
 
+// TODO: Replace this by FIFO commands
+#define IPC 0x02FFF040
+
 	// Magic address, after IPC struct
-#define sndControl		((SND_CONTROL*)((u32)(IPC) + sizeof(TransferRegion)))
+#define sndControl		((SND_CONTROL*)IPC)
 		
 // ----------
 

@@ -6,7 +6,7 @@
 #include <string.h>
 
 #include "Sound9.h"
-#include "../../SoundCommon.h"
+#include "SoundCommon.h"
 
 inline void ASSERT(bool x) { }
 

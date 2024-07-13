@@ -7,7 +7,7 @@
 
 #include <nds.h>
 #include "main.h"
-#include "../../SoundCommon.h"
+#include "SoundCommon.h"
 
 #ifdef __cplusplus
 extern "C" {
