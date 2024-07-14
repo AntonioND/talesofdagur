@@ -1,0 +1,2 @@
+# 8 bit tilemap, magenta is transparent, no map, no tileset optimization, LZ77 compression
+-gB8 -gt -gTFF00FF -mR! -m! -gzl

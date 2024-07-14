@@ -7,22 +7,14 @@
 #include "sprites.h"
 
 // Backgrounds
-#include "battleBeachPal_bin.h"
-#include "battleBeach_bin.h"
-#include "battleCastlePal_bin.h"
-#include "battleCastle_bin.h"
-#include "battleECastlePal_bin.h"
-#include "battleECastle_bin.h"
-#include "battleECavePal_bin.h"
-#include "battleECave_bin.h"
-#include "battleFCavePal_bin.h"
-#include "battleFCave_bin.h"
-#include "battleICavePal_bin.h"
-#include "battleICave_bin.h"
-#include "battleTownPal_bin.h"
-#include "battleTown_bin.h"
-#include "battleWoodsPal_bin.h"
-#include "battleWoods_bin.h"
+#include "battleBacks/battleBeach.h"
+#include "battleBacks/battleCastle.h"
+#include "battleBacks/battleECastle.h"
+#include "battleBacks/battleECave.h"
+#include "battleBacks/battleFCave.h"
+#include "battleBacks/battleICave.h"
+#include "battleBacks/battleTown.h"
+#include "battleBacks/battleWoods.h"
 #include "gameOverMap_bin.h"
 #include "gameOver_bin.h"
 #include "level10ColMap_bin.h"
@@ -459,7 +451,7 @@ extern pLevelLink levelLinking[LEVEL_SIZE];
 extern pDoorLink doorLinking[LEVEL_SIZE];
 extern const NPC gameNPCs[];
 extern const u8 *bgMusic[LEVEL_SIZE];
-extern const u8 *battleMapsPals[LEVEL_SIZE * 2];
+extern const void *battleMapsPals[LEVEL_SIZE * 2];
 
 // Compression code
 void decompressToVRAM(const void *source, void *dest);
