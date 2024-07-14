@@ -29,17 +29,17 @@ Figure dingFigure, dongFigure, dangFigure;
 Figure vardaFigure, queenFigure;
 
 const u8 *chestData[] = {
-    chest1Figure_bin,
-    chest2Figure_bin,
-    chest3Figure_bin,
-    chest4Figure_bin,
+    (u8 *)chest1FigureTiles,
+    (u8 *)chest2FigureTiles,
+    (u8 *)chest3FigureTiles,
+    (u8 *)chest4FigureTiles,
 };
 
 const u16 *chestPal[] = {
-    (u16 *)chest1FigurePal_bin,
-    (u16 *)chest2FigurePal_bin,
-    (u16 *)chest3FigurePal_bin,
-    (u16 *)chest4FigurePal_bin,
+    (u16 *)chest1FigurePal,
+    (u16 *)chest2FigurePal,
+    (u16 *)chest3FigurePal,
+    (u16 *)chest4FigurePal,
 };
 
 // Functions
