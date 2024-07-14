@@ -257,8 +257,9 @@ void backgroundUpdateView(u16 *workMap, const u16 *targetMap)
 void graphicInitMainMenu()
 {
     initOAM();
+
     // Return the screens as they were
-    lcdSwap();
+    lcdMainOnBottom();
 
     videoSetMode(MODE_0_2D | DISPLAY_BG0_ACTIVE | DISPLAY_BG1_ACTIVE | DISPLAY_SPR_ACTIVE
                  | DISPLAY_SPR_1D);
@@ -326,7 +327,7 @@ void graphicInitSplash()
     textPutOn(true, (u16 *)BG_MAP_RAM_SUB(31), 7, 12, "Touch to continue");
 
     // and have the splashscreen on the top screen
-    lcdSwap();
+    lcdMainOnTop();
 
     // Fill in the rotation values for the first time
     handleSplash();
