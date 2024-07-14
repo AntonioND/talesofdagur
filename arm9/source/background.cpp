@@ -698,8 +698,12 @@ bool saveGame(int saveSlot)
         FILE *outputBuffer = fopen(fileName.c_str(), "w");
         if (!outputBuffer)
             return false;
-        if (!fwrite(&gameData, sizeof(saveData), 1, outputBuffer))
+
+        if (!fwrite(&gameData, sizeof(saveData), 1, outputBuffer)) {
+            fclose(outputBuffer);
             return false;
+        }
+
         if (!fclose(outputBuffer))
             return false;
 
@@ -707,6 +711,7 @@ bool saveGame(int saveSlot)
         outputBuffer = fopen(fileName.c_str(), "r");
         if (outputBuffer == NULL)
             return false;
+
         fclose(outputBuffer);
         return false;
     } else
@@ -720,11 +725,13 @@ bool loadSavedGame(int saveSlot, pSaveData gameData)
     if (gameValues.isFAT) {
         string fileName    = "ToD" + itoa(saveSlot, 10) + ".sav";
         FILE *outputBuffer = fopen(fileName.c_str(), "r");
-        if (!outputBuffer)
+        if (outputBuffer == NULL)
             return false;
 
-        if (!fread(gameData, sizeof(saveData), 1, outputBuffer))
+        if (fread(gameData, sizeof(saveData), 1, outputBuffer) != 1) {
+            fclose(outputBuffer);
             return false;
+        }
 
         if (!fclose(outputBuffer))
             return false;
