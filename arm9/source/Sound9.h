@@ -6,24 +6,27 @@
 #define SOUND9_H
 
 #include <nds.h>
-#include "main.h"
+
 #include "SoundCommon.h"
+#include "background.h"
+#include "main.h"
+#include "sprites.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include "mscMenu_mod.h"
-#include "mscSplash_mod.h"
 #include "mscBattle_mod.h"
-#include "mscWin_mod.h"
-#include "mscPalace_mod.h"
-#include "mscGOver_mod.h"
+#include "mscBeach_mod.h"
 #include "mscBoss_mod.h"
 #include "mscCave_mod.h"
-#include "mscWoods_mod.h"
+#include "mscGOver_mod.h"
+#include "mscMenu_mod.h"
+#include "mscPalace_mod.h"
+#include "mscSplash_mod.h"
 #include "mscTown_mod.h"
-#include "mscBeach_mod.h"
+#include "mscWin_mod.h"
+#include "mscWoods_mod.h"
 
 // ----- Functions -----
 
@@ -43,4 +46,4 @@ extern void updateMusic(LEVELS lvlIdx);
 }
 #endif
 
-#endif	// SOUND9_H
+#endif // SOUND9_H

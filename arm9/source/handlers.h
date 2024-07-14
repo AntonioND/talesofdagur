@@ -1,9 +1,9 @@
 #ifndef __HANDLERS_H__
 #define __HANDLERS_H__
 
-#include "main.h"
+#include "sprites.h"
 
-	// Function prototypes
+// Function prototypes
 void handleEffects(void);
 void handleGame(void);
 void handleInGameMenu(void);
