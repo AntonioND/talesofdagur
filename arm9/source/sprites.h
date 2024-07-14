@@ -43,15 +43,14 @@ using namespace std;
 #include "Figures/vardaFigure.h"
 
 // Weapon
-#include "wpnAxe_bin.h"
-#include "wpnBow_bin.h"
-#include "wpnClub_bin.h"
-#include "wpnDagger_bin.h"
-#include "wpnGun_bin.h"
-#include "wpnPal_bin.h"
-#include "wpnSpear_bin.h"
-#include "wpnStaff_bin.h"
-#include "wpnSword_bin.h"
+#include "Weapons/wpnAxe.h"
+#include "Weapons/wpnBow.h"
+#include "Weapons/wpnClub.h"
+#include "Weapons/wpnDagger.h"
+#include "Weapons/wpnGun.h"
+#include "Weapons/wpnSpear.h"
+#include "Weapons/wpnStaff.h"
+#include "Weapons/wpnSword.h"
 
 // Monsters
 #include "Monsters/aquticBattler.h"
@@ -162,6 +161,7 @@ typedef struct _Weapon_
     pSpriteEntry wpnSpr;
     int posX, posY;
     u8 *dataPtr;
+    u16 *palPtr;
     int animIdx;
     bool isActive;
 

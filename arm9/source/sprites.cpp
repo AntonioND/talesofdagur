@@ -813,34 +813,42 @@ void initWeapon(pWeapon cWeapon, itemAttr wpnAttr)
 
     switch (wpnAttr) {
         case WEAPON_SWORD:
-            cWeapon->dataPtr = (u8 *)wpnSword_bin;
+            cWeapon->dataPtr = (u8 *)wpnSwordTiles;
+            cWeapon->palPtr  = (u16 *)wpnSwordPal;
             break;
         case WEAPON_SPEAR:
-            cWeapon->dataPtr = (u8 *)wpnSpear_bin;
+            cWeapon->dataPtr = (u8 *)wpnSpearTiles;
+            cWeapon->palPtr  = (u16 *)wpnSpearPal;
             break;
         case WEAPON_AXE:
-            cWeapon->dataPtr = (u8 *)wpnAxe_bin;
+            cWeapon->dataPtr = (u8 *)wpnAxeTiles;
+            cWeapon->palPtr  = (u16 *)wpnAxePal;
             break;
         case WEAPON_BOW:
-            cWeapon->dataPtr = (u8 *)wpnBow_bin;
+            cWeapon->dataPtr = (u8 *)wpnBowTiles;
+            cWeapon->palPtr  = (u16 *)wpnBowPal;
             break;
         case WEAPON_GUN:
-            cWeapon->dataPtr = (u8 *)wpnGun_bin;
+            cWeapon->dataPtr = (u8 *)wpnGunTiles;
+            cWeapon->palPtr  = (u16 *)wpnGunPal;
             break;
         case WEAPON_CLUB:
-            cWeapon->dataPtr = (u8 *)wpnClub_bin;
+            cWeapon->dataPtr = (u8 *)wpnClubTiles;
+            cWeapon->palPtr  = (u16 *)wpnClubPal;
             break;
         case WEAPON_STAFF:
-            cWeapon->dataPtr = (u8 *)wpnStaff_bin;
+            cWeapon->dataPtr = (u8 *)wpnStaffTiles;
+            cWeapon->palPtr  = (u16 *)wpnStaffPal;
             break;
         case WEAPON_DAGGER:
-            cWeapon->dataPtr = (u8 *)wpnDagger_bin;
+            cWeapon->dataPtr = (u8 *)wpnDaggerTiles;
+            cWeapon->palPtr  = (u16 *)wpnDaggerPal;
             break;
         default:
             break;
     }
     dmaCopy(cWeapon->dataPtr, SPRITE_GFX + sprOffset * 16 * 16, 32 * 32 / 2);
-    dmaCopy(wpnPal_bin, SPRITE_PALETTE + sprOffset * 16, 32);
+    dmaCopy(cWeapon->palPtr, SPRITE_PALETTE + sprOffset * 16, 32);
 }
 
 void upadteWeapon(pWeapon cWeapon)
