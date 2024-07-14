@@ -364,6 +364,7 @@ void handleEffects()
                     ((u16 *)BG_MAP_RAM_SUB(31))[i] = 0;
                 BG_PALETTE_SUB[0] = BG_PALETTE[0] = 0x7FFF;
                 swiSoftReset();
+                // TODO: This doesn't work. We need a different way to restart the game.
             }
             break;
     }
