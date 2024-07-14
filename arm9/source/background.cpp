@@ -704,7 +704,7 @@ bool saveGame(int saveSlot)
             return false;
         }
 
-        if (!fclose(outputBuffer))
+        if (fclose(outputBuffer))
             return false;
 
         // Check if file exists
@@ -713,11 +713,11 @@ bool saveGame(int saveSlot)
             return false;
 
         fclose(outputBuffer);
-        return false;
-    } else
+        return true;
+    } else {
         writeSRAM((u8 *)&gameData, sizeof(saveData) * saveSlot, sizeof(saveData));
-
-    return true;
+        return true;
+    }
 }
 
 bool loadSavedGame(int saveSlot, pSaveData gameData)
@@ -733,7 +733,7 @@ bool loadSavedGame(int saveSlot, pSaveData gameData)
             return false;
         }
 
-        if (!fclose(outputBuffer))
+        if (fclose(outputBuffer))
             return false;
 
         if (gameData->isLoaded)
