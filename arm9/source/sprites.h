@@ -13,9 +13,8 @@ using namespace std;
 
 // Graphics
 // Figures
-#include "alexFigureDown_bin.h"
-#include "alexFigurePal_bin.h"
-#include "alexFigure_bin.h"
+#include "Figures/alexFigureDown.h"
+#include "Figures/alexFigure.h"
 #include "Figures/bartenderFigure.h"
 #include "Figures/civilian10Figure.h"
 #include "Figures/civilian11Figure.h"

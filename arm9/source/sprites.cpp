@@ -644,7 +644,7 @@ void initFigures()
         SPRITE_PALETTE[i] = 0;
 
     // The main player
-    initFigure("Alex", &alexFigure, (u8 *)alexFigure_bin, (u16 *)alexFigurePal_bin);
+    initFigure("Alex", &alexFigure, (u8 *)alexFigureTiles, (u16 *)alexFigurePal);
 
     curPlayer = &alexFigure;
     setDirFigure(curPlayer, DIR_UP);

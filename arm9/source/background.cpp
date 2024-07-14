@@ -634,7 +634,10 @@ void initMode(gameMode selMode)
             hideRotScaleSprite(battleValues.curMonster.mnsSpr, true);
             textVars.scroolY = 52 * 2;
             BG_PALETTE[0] = BG_PALETTE_SUB[0] = 0;
-            curPlayer->allData                = (u8 *)alexFigureDown_bin;
+
+            curPlayer->allData = (u8 *)alexFigureDownTiles;
+            curPlayer->palData = (u16 *)alexFigureDownPal;
+
             setPosFigure(curPlayer, (256 - 32) / 2, (192 - 48) / 2);
             updateFigure(curPlayer);
             decompressToVRAM(gameOver_bin, (void *)BG_TILE_RAM_SUB(0));
