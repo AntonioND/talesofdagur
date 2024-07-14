@@ -200,7 +200,7 @@ void handleEffects()
 
             if (levelLoad != NO_LEVEL) {
                 gameValues.loadedLevel = levelLoad;
-                sndControl->toFade     = checkMusicFade(gameValues.loadedLevel);
+                soundToFade            = checkMusicFade(gameValues.loadedLevel);
                 gameValues.curMode     = LEVELMODE_FADEOUT;
             }
             break;
@@ -213,7 +213,7 @@ void handleEffects()
             REG_BLDCNT = BLEND_FADE_BLACK | BLEND_SRC_SPRITE | BLEND_SRC_BG0 | BLEND_SRC_BG2
                          | BLEND_SRC_BG3 | BLEND_DST_BACKDROP;
             REG_BLDY = gameValues.fadeVal | gameValues.fadeVal << 8;
-            if (sndControl->toFade)
+            if (soundToFade)
                 SoundSendCmd(SND_CMD_SETVOLUME, 127 - (gameValues.fadeVal * 8));
             if (--gameValues.tickVal < 0) {
                 gameValues.tickVal = 2;
@@ -910,7 +910,7 @@ void handleFigures()
             while (curLevel->linkedDoors[curLnkLvl].loadedLevel != NO_LEVEL) {
                 if (isCollisionDoor(curFigure, &curLevel->linkedDoors[curLnkLvl])) {
                     gameValues.loadedLevel = curLevel->linkedDoors[curLnkLvl].loadedLevel;
-                    sndControl->toFade     = checkMusicFade(gameValues.loadedLevel);
+                    soundToFade            = checkMusicFade(gameValues.loadedLevel);
                     gameValues.newPosX     = curLevel->linkedDoors[curLnkLvl].posFixX * 8;
                     gameValues.newPosY     = curLevel->linkedDoors[curLnkLvl].posFixY * 8;
                     gameValues.newDir      = curLevel->linkedDoors[curLnkLvl].loadedDir;

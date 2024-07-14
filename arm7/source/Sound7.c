@@ -6,8 +6,8 @@
 // 10/21/04 - Moved MOD_NO_NOTE/MOD_NO_SAMPLE defines here,
 //            since nothing outside player needs to know them
 // 05/05/05 - Converted to use periods instead of Hz.
-//			  MOD timing is done fixed-point, mixer moved to IWRAM.
-//			  Added SFX functions.
+//            MOD timing is done fixed-point, mixer moved to IWRAM.
+//            Added SFX functions.
 // 05/06/05 - Added all effect functions.
 // 05/08/05 - Ported to DS.
 // ----------------------
@@ -21,12 +21,6 @@
 #include "SoundCommon.h"
 
 // ----- Constants -----
-
-// Switch this on if your IRQ stack isn't big enough, and you can't
-// make it any bigger. It will use some assembly code to switch the
-// CPU into system mode during the MOD updating interrupt, thus
-// working on the large user stack rather than the small IRQ stack.
-#define SWITCH_TO_USER_STACK FALSE
 
 // For patterns to specify that there is no note. We have 5 octaves,
 // so only notes 0-59 are used, and 63 is the highest that still fits
@@ -115,7 +109,7 @@ static void MODStartTimer();
 static void MODStopTimer();
 static void MODPlay(const void *modFile);
 static void MODStop();
-static BOOL MODSeek(u32 order, u32 row);
+static bool MODSeek(u32 order, u32 row);
 void MODUpdate();
 static void MODProcessRow();
 static void MODUpdateEffects();
@@ -289,29 +283,27 @@ static const s8 vibratoRandomTab[64] = {
 
 // --- Sound functions ---
 
+static void SndFifoHandlerDatamsg(int num_bytes, void *userdata)
+{
+    SND_COMMAND cmd = { 0 };
+
+    if (num_bytes != sizeof(SND_COMMAND)) {
+        // Invalid command size
+        return;
+    }
+
+    fifoGetDatamsg(FIFO_USER_01, sizeof(SND_COMMAND), (void *)&cmd);
+
+    cmdFuncTable[cmd.cmdType](&cmd);
+}
+
 // Call this once at startup
 void SndInit7()
 {
-    s32 i;
-    u16 oldIME;
-
-    oldIME  = REG_IME;
-    REG_IME = 0;
-
-    // Enable sound, full volume
-    REG_POWERCNT = POWER_SOUND;
-    REG_SOUNDCNT = SOUND_ENABLE | 127;
-
-    TIMER0_CR = 0;
-    // My custom IRQ handler uses this, but ndslib doesn't have it so
-    // the call to SndTimerIrq is hardcoded in ARM7 main.cpp's handler.
-    //	irqTable[IRQTABLE_TM0] = (u32)SndTimerIrq;
-    REG_IE |= IRQ_TIMER0;
-
     memset(&sndVars, 0, sizeof(sndVars));
     memset(&sndMod, 0, sizeof(sndMod));
 
-    for (i = 0; i < SND_MAX_CHANNELS; i++) {
+    for (int i = 0; i < SND_MAX_CHANNELS; i++) {
         sndChannel[i].data       = NULL;
         sndChannel[i].length     = 0;
         sndChannel[i].loopLength = 0;
@@ -319,44 +311,15 @@ void SndInit7()
         sndChannel[i].pan        = 0;
         sndChannel[i].vol        = 0;
     }
-    sndVars.bInitialized = TRUE;
 
-    REG_IME = oldIME;
-
-} // SndInit
-
-void SndVblIrq()
-{
-    if (sndVars.bInitialized == FALSE || sndControl->bInitialized == FALSE)
-        return;
-
-    while (sndVars.curCmd != sndControl->curCmd) {
-        SND_COMMAND *cmd = &sndControl->cmd[sndVars.curCmd];
-
-        //		ASSERT(cmd->cmdType < SND_CMD_NUM);
-        cmdFuncTable[cmd->cmdType](cmd);
-        sndVars.curCmd++;
-        sndVars.curCmd &= MAX_SND_COMMANDS - 1;
-    }
+    // Now that everything has been set up and we're ready to receive messages,
+    // configure the message handler
+    fifoSetDatamsgHandler(FIFO_USER_01, SndFifoHandlerDatamsg, NULL);
 }
 
-void SndTimerIrq()
+static void SndTimerIrq()
 {
-#if !SWITCH_TO_USER_STACK
     MODUpdate();
-#else
-    asm volatile("	stmfd	sp!, {r0-r2}			"); // Save regs on IRQ stack.
-    asm volatile(
-        "	mrs		r0, cpsr				"); // Grab CPSR, which is in IRQ mode right now.
-    asm volatile("	orr		r1, r0, #0x1f			"); // 0x1f = SYS mode. No need to clear first
-                                                        // since all bits are set.
-    asm volatile("	msr		cpsr, r1				"); // Switch to SYS mode.
-    asm volatile("	stmfd	sp!, {r0-r3, r12, lr}	"); // Save regs as per APCS, on user stack.
-    asm volatile("	bl		MODUpdate				"); // Call the function.
-    asm volatile("	ldmfd	sp!, {r0-r3, r12, lr}	"); // Load regs back from user stack.
-    asm volatile("	msr		cpsr, r0				"); // Switch back to IRQ mode.
-    asm volatile("	ldmfd	sp!, {r0-r1}			"); // Restore regs from IRQ stack.
-#endif
 }
 
 // --- Command functions ---
@@ -396,33 +359,19 @@ static void SndCmdSetCallback(SND_COMMAND *cmd)
 
 static void SndCmdSetVolume(SND_COMMAND *cmd)
 {
-    REG_SOUNDCNT = SOUND_ENABLE | cmd->param32;
+    REG_MASTER_VOLUME = cmd->param32;
 }
 
 // --- MOD functions ---
 
 static void MODStartTimer()
 {
-    u16 oldIME;
-
-    oldIME  = REG_IME;
-    REG_IME = 0;
-
-    TIMER0_CR   = 0;
-    TIMER0_DATA = sndVars.irqTimer;
-    TIMER0_CR   = TIMER_DIV_64 | TIMER_IRQ_REQ | TIMER_ENABLE;
-
-    REG_IME = oldIME;
+    timerStart(0, ClockDivider_64, sndVars.irqTimer, SndTimerIrq);
 }
 
 static void MODStopTimer()
 {
-    u16 oldIME;
-
-    oldIME    = REG_IME;
-    REG_IME   = 0;
-    TIMER0_CR = 0;
-    REG_IME   = oldIME;
+    timerStop(0);
 }
 
 static void MODPlay(const void *modFile)
@@ -470,13 +419,13 @@ static void MODStop()
 
 } // MODStop
 
-// Returns FALSE if song ended, TRUE if still playing
-static BOOL MODSeek(u32 order, u32 row)
+// Returns false if song ended, true if still playing
+static bool MODSeek(u32 order, u32 row)
 {
     sndMod.curOrder = order;
     if (sndMod.curOrder >= sndMod.orderCount) {
         MODStop();    // Hit the end of the song, so stop it
-        return FALSE; // FALSE = song ended
+        return false; // false = song ended
     }
 
     sndMod.curRow = row;
@@ -488,7 +437,7 @@ static BOOL MODSeek(u32 order, u32 row)
     sndMod.rowPtr    = sndMod.pattern[sndMod.order[sndMod.curOrder]]
                     + sndMod.curRow * 4 * sndMod.channelCount; // 4 bytes/channel/row
 
-    return TRUE; // TRUE = continue playing
+    return true; // true = continue playing
 
 } // MODSeek
 
@@ -502,8 +451,8 @@ void MODUpdate()
 
         if (sndMod.patDelay == 0) {
             if (sndMod.curRow++ >= MOD_PATTERN_ROWS) {
-                if (MODSeek(sndMod.nextOrder, sndMod.breakRow) == FALSE)
-                    return; // FALSE = song ended
+                if (MODSeek(sndMod.nextOrder, sndMod.breakRow) == false)
+                    return; // false = song ended
 
                 sndMod.curRow++;
             }
@@ -778,7 +727,7 @@ static void MODInitVibrato(MOD_UPDATE_VARS *vars, MOD_VIBRATO_PARAMS *vibrato)
         vibrato->depth = vars->param & 0xf;
     if ((vars->param >> 4) != 0)
         vibrato->speed = vars->param >> 4;
-    if (vibrato->noRetrig == FALSE && vars->note != MOD_NO_NOTE)
+    if (vibrato->noRetrig == false && vars->note != MOD_NO_NOTE)
         vibrato->tick = 0;
 }
 
@@ -1059,7 +1008,7 @@ static void MODFXSpecialRow(MOD_UPDATE_VARS *vars)
     switch (vars->modChn->param >> 4) {
         case 0x0: // Undefined, we use it for callback
             if (sndMod.callback != NULL)
-                sndMod.callback(param, TRUE);
+                sndMod.callback(param, true);
             break;
         case 0x1: // Fine porta up
             vars->fineSlide = param;
@@ -1073,7 +1022,7 @@ static void MODFXSpecialRow(MOD_UPDATE_VARS *vars)
             break;
         case 0x4: // Vibrato waveform
             vars->modChn->vibrato.waveform = param & 3;
-            vars->modChn->vibrato.noRetrig = (param & 4) ? TRUE : FALSE;
+            vars->modChn->vibrato.noRetrig = (param & 4) ? true : false;
             break;
         case 0x5: // Set finetune
             vars->modChn->finetune = param;
@@ -1099,7 +1048,7 @@ static void MODFXSpecialRow(MOD_UPDATE_VARS *vars)
             break;
         case 0x7: // Tremolo waveform
             vars->modChn->tremolo.waveform = param & 3;
-            vars->modChn->tremolo.noRetrig = (param & 4) ? TRUE : FALSE;
+            vars->modChn->tremolo.noRetrig = (param & 4) ? true : false;
             break;
         case 0x8: // Set panning
             vars->modChn->pan = (param << 4) | param;
@@ -1137,7 +1086,7 @@ static void MODFXSpecialMid(MOD_UPDATE_VARS *vars)
     switch (vars->modChn->param >> 4) {
         case 0x0: // Undefined, we use it for callback
             if (sndMod.callback != NULL)
-                sndMod.callback(vars->modChn->param & 0xf, FALSE);
+                sndMod.callback(vars->modChn->param & 0xf, false);
             break;
         case 0x1: // Fine porta up
             break;

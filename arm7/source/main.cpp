@@ -21,7 +21,6 @@ void power_button_callback(void)
 void vblank_handler(void)
 {
     inputGetAndSend();
-    SndVblIrq();
 }
 
 int main(int argc, char *argv[])
@@ -41,6 +40,7 @@ int main(int argc, char *argv[])
     touchInit();
 
     irqInit();
+    irqSet(IRQ_VBLANK, vblank_handler);
 
     fifoInit();
 
@@ -57,10 +57,7 @@ int main(int argc, char *argv[])
     // frequently.
     initClockIRQTimer(3);
 
-    irqSet(IRQ_VBLANK, vblank_handler);
     irqEnable(IRQ_VBLANK);
-    irqSet(IRQ_TIMER0, SndTimerIrq);
-    irqEnable(IRQ_TIMER0);
 
     SndInit7();
 
