@@ -2,9 +2,8 @@
 #define __MAIN_H__
 
 #include <nds.h>
-#define DEBUG  0
-#define DISP_Y REG_VCOUNT
 
+#define DEBUG 0
 
 // Variables
 extern volatile u32 frameCounter;

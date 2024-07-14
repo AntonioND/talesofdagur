@@ -794,9 +794,10 @@ void handleHBlank()
         case LEVELMODE_MENU_START:
         case LEVELMODE_MENU_CHOICE:
         case LEVELMODE_MENU_LOAD:
-            BG_PALETTE[1]     = ((u16 *)palGrad_bin)[DISP_Y / 4];
-            BG_PALETTE_SUB[1] = RGB15(0, 5 + DISP_Y / 7, 25);
-            BG_PALETTE_SUB[2] = RGB15((DISP_Y - 121) / 2, (DISP_Y - 121) / 2, (DISP_Y - 121) / 2);
+            BG_PALETTE[1]     = ((u16 *)palGrad_bin)[REG_VCOUNT / 4];
+            BG_PALETTE_SUB[1] = RGB15(0, 5 + REG_VCOUNT / 7, 25);
+            BG_PALETTE_SUB[2] =
+                RGB15((REG_VCOUNT - 121) / 2, (REG_VCOUNT - 121) / 2, (REG_VCOUNT - 121) / 2);
             break;
         case LEVELMODE_INTRO:
             break;
@@ -805,22 +806,22 @@ void handleHBlank()
         case LEVELMODE_BATTLE_FADEOUT:
         case LEVELMODE_BATTLE:
         case LEVELMODE_BATTLE_FADEIN:
-            BG_PALETTE_SUB[0] = RGB15(0, 15 + (DISP_Y - 192) / 15, 25);
+            BG_PALETTE_SUB[0] = RGB15(0, 15 + (REG_VCOUNT - 192) / 15, 25);
             break;
         case LEVELMODE_SWITCHLEVEL:
         case LEVELMODE_INGAME_MENU:
         case LEVELMODE_FADEIN:
         case LEVELMODE_FADEOUT:
         case LEVELMODE_PLAY:
-            BG_PALETTE[0]     = RGB15(0, 15 + (DISP_Y) / 15, 25);
-            BG_PALETTE_SUB[0] = RGB15(0, 15 + (DISP_Y - 192) / 15, 25);
+            BG_PALETTE[0]     = RGB15(0, 15 + (REG_VCOUNT) / 15, 25);
+            BG_PALETTE_SUB[0] = RGB15(0, 15 + (REG_VCOUNT - 192) / 15, 25);
             break;
         case LEVELMODE_GAMEOVER_FADEIN:
             break;
         case LEVELMODE_GAMEOVER_FADEOUT:
         case LEVELMODE_GAMEOVER:
         case LEVELMODE_GAMEOVER_WHITEFADE:
-            BG_PALETTE_SUB[1] = RGB15(15 + (DISP_Y - 192) / 15, 5, 5);
+            BG_PALETTE_SUB[1] = RGB15(15 + (REG_VCOUNT - 192) / 15, 5, 5);
             break;
     }
 }
