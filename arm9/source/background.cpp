@@ -290,8 +290,8 @@ void graphicInitMainMenu()
     decompressToVRAM(mainMenuFrontMap, (void *)BG_MAP_RAM_SUB(3));
     BG_PALETTE_SUB[0] = RGB15(31, 31, 31);
 
-    dmaCopy(spr16Pal_bin, SPRITE_PALETTE, spr16Pal_bin_size);
-    dmaCopy(textCursor_bin, SPRITE_GFX, textCursor_bin_size);
+    dmaCopy(spr16PalPal, SPRITE_PALETTE, spr16PalPalLen);
+    dmaCopy(textCursorTiles, SPRITE_GFX, textCursorTilesLen);
 
     textVars.cursorSprite               = &spritesMain[2];
     textVars.cursorSprite->attribute[0] = ATTR0_NORMAL | ATTR0_COLOR_16;
@@ -392,10 +392,10 @@ void initGauge(pGauge workGauge, int posX, int posY, int gRate)
     workGauge->indSpr->attribute[1] = ATTR1_SIZE_64;
     workGauge->indSpr->attribute[2] = ATTR2_PALETTE(15) | workGauge->dataOffset;
 
-    dmaCopy(battleGauge_bin, SPRITE_GFX_SUB + workGauge->dataOffset * 16, 32);
+    dmaCopy(battleGaugeTiles, SPRITE_GFX_SUB + workGauge->dataOffset * 16, 32);
     for (int i = 1; i < 7; ++i)
-        dmaCopy(battleGauge_bin + 32, SPRITE_GFX_SUB + (workGauge->dataOffset + i) * 16, 32);
-    dmaCopy(battleGauge_bin + 32 * 10, SPRITE_GFX_SUB + (workGauge->dataOffset + 7) * 16, 32);
+        dmaCopy((u8 *)battleGaugeTiles + 32, SPRITE_GFX_SUB + (workGauge->dataOffset + i) * 16, 32);
+    dmaCopy((u8 *)battleGaugeTiles + 32 * 10, SPRITE_GFX_SUB + (workGauge->dataOffset + 7) * 16, 32);
     moveSprite(workGauge->indSpr, posX, posY);
 }
 
@@ -406,7 +406,7 @@ void updateGauge(pGauge workGauge)
 
     if (workGauge->gTimer > 9 * 6) {
         workGauge->isFull = true;
-        dmaCopy(battleGauge_bin + 9 * 32, SPRITE_GFX_SUB + (workGauge->dataOffset + 6) * 16, 32);
+        dmaCopy((u8 *)battleGaugeTiles + 9 * 32, SPRITE_GFX_SUB + (workGauge->dataOffset + 6) * 16, 32);
         return;
     }
 
@@ -422,13 +422,13 @@ void updateGauge(pGauge workGauge)
     } else // Jump ticks
         workGauge->gTimer += (inc - 1) + workGauge->gRate - 10;
 
-    dmaCopy(battleGauge_bin, SPRITE_GFX_SUB + workGauge->dataOffset * 16, 32);
-    dmaCopy(battleGauge_bin + (modulo + 1) * 32,
+    dmaCopy(battleGaugeTiles, SPRITE_GFX_SUB + workGauge->dataOffset * 16, 32);
+    dmaCopy((u8 *)battleGaugeTiles + (modulo + 1) * 32,
             SPRITE_GFX_SUB + ((workGauge->dataOffset + 1) + devisor) * 16, 32);
     if (devisor)
-        dmaCopy(battleGauge_bin + 9 * 32,
+        dmaCopy((u8 *)battleGaugeTiles + 9 * 32,
                 SPRITE_GFX_SUB + ((workGauge->dataOffset + 1) + devisor - 1) * 16, 32);
-    dmaCopy(battleGauge_bin + 32 * 10, SPRITE_GFX_SUB + (workGauge->dataOffset + 7) * 16, 32);
+    dmaCopy((u8 *)battleGaugeTiles + 32 * 10, SPRITE_GFX_SUB + (workGauge->dataOffset + 7) * 16, 32);
 }
 
 void resetGuage(pGauge workGauge)
@@ -437,7 +437,7 @@ void resetGuage(pGauge workGauge)
     workGauge->gTick  = 10 - workGauge->gRate;
     workGauge->isFull = false;
     for (int i = 1; i < 7; ++i)
-        dmaCopy(battleGauge_bin + 32, SPRITE_GFX_SUB + (workGauge->dataOffset + i) * 16, 32);
+        dmaCopy((u8 *)battleGaugeTiles + 32, SPRITE_GFX_SUB + (workGauge->dataOffset + i) * 16, 32);
 }
 
 void startBattle(int mnsIdx)
@@ -475,8 +475,8 @@ void graphicInitBattle()
     memset((void *)BG_MAP_RAM(25), 0, 32 * 32 * 2);
 
     // Set up a sprite for the main display
-    dmaCopy(spr16Pal_bin, SPRITE_PALETTE + 16 * 15, spr16Pal_bin_size);
-    dmaCopy(textCursor_bin, SPRITE_GFX + 1000 * 16, textCursor_bin_size);
+    dmaCopy(spr16PalPal, SPRITE_PALETTE + 16 * 15, spr16PalPalLen);
+    dmaCopy(textCursorTiles, SPRITE_GFX + 1000 * 16, textCursorTilesLen);
     hideSprite(textVars.cursorSpriteMain, true);
 
     // Hide all figures

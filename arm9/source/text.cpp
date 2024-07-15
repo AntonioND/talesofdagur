@@ -109,8 +109,8 @@ void initText()
     dmaCopy(textBoxPal_bin, BG_PALETTE_SUB, 16);
     dmaCopy(aButton_bin, SPRITE_GFX_SUB, aButton_bin_size);
     dmaCopy(emmlemPal_bin, SPRITE_PALETTE_SUB, emmlemPal_bin_size);
-    dmaCopy(spr16Pal_bin, SPRITE_PALETTE_SUB + 16 * 15, spr16Pal_bin_size);
-    dmaCopy(textCursor_bin, SPRITE_GFX_SUB + 16 * 16 / 2 + 64 * 64 / 2, textCursor_bin_size);
+    dmaCopy(spr16PalPal, SPRITE_PALETTE_SUB + 16 * 15, spr16PalPalLen);
+    dmaCopy(textCursorTiles, SPRITE_GFX_SUB + 16 * 16 / 2 + 64 * 64 / 2, textCursorTilesLen);
 
     // Decompressing...
     decompressToVRAM(textBoxData_bin, (void *)BG_TILE_RAM_SUB(0));

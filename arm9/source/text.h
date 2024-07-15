@@ -5,18 +5,18 @@
 
 #include "aButton_bin.h"
 #include "background.h"
-#include "battleGauge_bin.h"
 #include "emmlemPal_bin.h"
 #include "main.h"
 #include "Menu/mainMenuBack.h"
 #include "Menu/mainMenuFront.h"
+#include "Misc/battleGauge.h"
+#include "Misc/spr16Pal.h"
+#include "Misc/textCursor.h"
 #include "palGrad_bin.h"
 #include "playerEmblem_bin.h"
-#include "spr16Pal_bin.h"
 #include "sprites.h"
 #include "textBoxData_bin.h"
 #include "textBoxPal_bin.h"
-#include "textCursor_bin.h"
 #include "textFont_bin.h"
 
 typedef enum _menuOption_
