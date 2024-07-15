@@ -272,16 +272,9 @@ void graphicInitMainMenu()
     REG_BG3CNT_SUB = BG_32x32 | BG_COLOR_16 | BG_MAP_BASE(3) | BG_TILE_BASE(2) | 1; // Text Hblank
 
     decompressToVRAM(textFont_bin, (void *)BG_TILE_RAM(0));
-    decompressToVRAM(mainMenuBack_bin, (void *)BG_TILE_RAM_SUB(0));
-    decompressToVRAM(mainMenuBackMap_bin, (void *)BG_MAP_RAM_SUB(5));
-    decompressToVRAM(mainMenuFront_bin, (void *)BG_TILE_RAM_SUB(2));
-    decompressToVRAM(mainMenuFrontMap_bin, (void *)BG_MAP_RAM_SUB(3));
     decompressToVRAM(textBoxData_bin, (void *)BG_TILE_RAM(1));
     dmaCopy(textBoxPal_bin, BG_PALETTE, 16);
     undrawRectOn((u16 *)BG_MAP_RAM(30), 0, 0, 32, 32);
-
-    dmaCopy(spr16Pal_bin, SPRITE_PALETTE, spr16Pal_bin_size);
-    dmaCopy(textCursor_bin, SPRITE_GFX, textCursor_bin_size);
     BG_PALETTE[17] = RGB15(0, 25, 25);
     BG_PALETTE[33] = RGB15(31, 0, 0);
     BG_PALETTE[49] = RGB15(0, 20, 7);
@@ -289,7 +282,16 @@ void graphicInitMainMenu()
     BG_PALETTE[81] = RGB15(20, 20, 20);
     for (int i = 18; i < 256; i += 16)
         BG_PALETTE[i] = 0;
-    BG_PALETTE[0] = BG_PALETTE_SUB[0] = RGB15(31, 31, 31);
+    BG_PALETTE[0] = RGB15(31, 31, 31);
+
+    decompressToVRAM(mainMenuBackTiles, (void *)BG_TILE_RAM_SUB(0));
+    decompressToVRAM(mainMenuBackMap, (void *)BG_MAP_RAM_SUB(5));
+    decompressToVRAM(mainMenuFrontTiles, (void *)BG_TILE_RAM_SUB(2));
+    decompressToVRAM(mainMenuFrontMap, (void *)BG_MAP_RAM_SUB(3));
+    BG_PALETTE_SUB[0] = RGB15(31, 31, 31);
+
+    dmaCopy(spr16Pal_bin, SPRITE_PALETTE, spr16Pal_bin_size);
+    dmaCopy(textCursor_bin, SPRITE_GFX, textCursor_bin_size);
 
     textVars.cursorSprite               = &spritesMain[2];
     textVars.cursorSprite->attribute[0] = ATTR0_NORMAL | ATTR0_COLOR_16;
@@ -634,15 +636,18 @@ void initMode(gameMode selMode)
             graphicInitGOver();
             hideRotScaleSprite(battleValues.curMonster.mnsSpr, true);
             textVars.scroolY = 52 * 2;
-            BG_PALETTE[0] = BG_PALETTE_SUB[0] = 0;
+            BG_PALETTE[0] = 0;
 
             curPlayer->allData = (u8 *)alexFigureDownTiles;
             curPlayer->palData = (u16 *)alexFigureDownPal;
 
             setPosFigure(curPlayer, (256 - 32) / 2, (192 - 48) / 2);
             updateFigure(curPlayer);
-            decompressToVRAM(gameOver_bin, (void *)BG_TILE_RAM_SUB(0));
-            decompressToVRAM(gameOverMap_bin, (void *)BG_MAP_RAM_SUB(31));
+
+            decompressToVRAM(gameOverTiles, (void *)BG_TILE_RAM_SUB(0));
+            decompressToVRAM(gameOverMap, (void *)BG_MAP_RAM_SUB(31));
+            dmaCopy(gameOverPal, BG_PALETTE_SUB, gameOverPalLen);
+
             curPlayer->isMotion    = false;
             curPlayer->spriteIndex = 0;
             setDirFigure(curPlayer, DIR_DOWN);
