@@ -10,10 +10,10 @@ OUT=${GRAPHICS}/Splash/
 rm -rf ${OUT}
 mkdir -p ${OUT}
 
-$GRIT splLayer2.bmp splLayer3.bmp -ftc -fh -W3 \
+$GRIT splLayer2.bmp splLayer3.bmp -ftc -fh -W2 \
     -gB8 -gb -gT! -gzl -pS \
     -D${OUT} -O${OUT}splPal
 
-$GRIT splLayer1.bmp -ftc -fh -W3 \
+$GRIT splLayer1.bmp -ftc -fh -W2 \
     -gB4 -gt -mR! -m! -gzl -pS \
     -D${OUT} -O${OUT}splSprPal
