@@ -11,8 +11,8 @@ ARM_NONE_EABI_PATH	?= $(WONDERFUL_TOOLCHAIN)/toolchain/gcc-arm-none-eabi/bin/
 # Source code paths
 # -----------------
 
-SOURCEDIRS	:= arm9/source
-INCLUDEDIRS	:= common/include
+SOURCEDIRS	:= arm9/source arm9/graphics
+INCLUDEDIRS	:= common/include arm9/graphics
 GFXDIRS		:= gfx
 BINDIRS		:= arm9/data/gfx arm9/data/msc
 AUDIODIRS	:=

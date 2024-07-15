@@ -161,11 +161,11 @@
 #include "level9Pal_bin.h"
 #include "level9UpMap_bin.h"
 #include "level9Up_bin.h"
-#include "splLayer1_bin.h"
-#include "splLayer2_bin.h"
-#include "splLayer3_bin.h"
-#include "splPal_bin.h"
-#include "splSprPal_bin.h"
+#include "Splash/splLayer1.h"
+#include "Splash/splLayer2.h"
+#include "Splash/splLayer3.h"
+#include "Splash/splPal.h"
+#include "Splash/splSprPal.h"
 #include "stamp1st_bin.h"
 
 // Defines

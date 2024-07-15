@@ -495,13 +495,13 @@ void initMode(gameMode selMode)
     int blank = 0;
     switch (selMode) {
         case LEVELMODE_SPLASH_FADEIN:
-            dmaCopy(splPal_bin, BG_PALETTE, splPal_bin_size);
-            dmaCopy(splSprPal_bin, SPRITE_PALETTE, splSprPal_bin_size);
+            dmaCopy(splPalPal, BG_PALETTE, splPalPalLen);
+            dmaCopy(splSprPalPal, SPRITE_PALETTE, splSprPalPalLen);
             BG_PALETTE_SUB[0] = BG_PALETTE[0] = 0x7FFF;
             swiCopy(&blank, BG_GFX, 256 * 256 | COPY_MODE_FILL);
-            decompressToVRAM(splLayer1_bin, SPRITE_GFX);
-            decompressToVRAM(splLayer2_bin, (void *)BG_BMP_RAM(0));
-            decompressToVRAM(splLayer3_bin, (void *)BG_BMP_RAM(4));
+            decompressToVRAM(splLayer1Tiles, SPRITE_GFX);
+            decompressToVRAM(splLayer2Bitmap, (void *)BG_BMP_RAM(0));
+            decompressToVRAM(splLayer3Bitmap, (void *)BG_BMP_RAM(4));
             for (int i = 0; i < 4 * 3; ++i) {
                 spritesMain[i].attribute[0] = ATTR0_NORMAL | ATTR0_COLOR_16 | (i / 4) * 64;
                 spritesMain[i].attribute[1] = ATTR1_SIZE_64 | (i % 4) * 64;
