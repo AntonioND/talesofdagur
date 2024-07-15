@@ -318,12 +318,13 @@ void graphicInitSplash()
     REG_BG3PD = 1 << 8;
 
     // Copy the text & setup the palette
-    BG_PALETTE_SUB[0]  = RGB15(31, 31, 31);
-    BG_PALETTE_SUB[1]  = RGB15(25, 0, 0);
+    decompressToVRAM(stamp1stBitmap, (void *)BG_BMP_RAM_SUB(2));
+    dmaCopy(stamp1stPal, BG_PALETTE_SUB, stamp1stPalLen);
+
+    decompressToVRAM(textFont_bin, (void *)BG_TILE_RAM_SUB(0));
     BG_PALETTE_SUB[17] = RGB15(0, 25, 25);
     BG_PALETTE_SUB[18] = RGB15(0, 0, 0);
-    decompressToVRAM(textFont_bin, (void *)BG_TILE_RAM_SUB(0));
-    decompressToVRAM(stamp1st_bin, (void *)BG_BMP_RAM_SUB(2));
+
     textPutOn(true, (u16 *)BG_MAP_RAM_SUB(31), 7, 12, "Touch to continue");
 
     // and have the splashscreen on the top screen

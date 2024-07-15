@@ -17,3 +17,7 @@ $GRIT splLayer2.bmp splLayer3.bmp -ftc -fh -W2 \
 $GRIT splLayer1.bmp -ftc -fh -W2 \
     -gB4 -gt -mR! -m! -gzl -pS \
     -D${OUT} -O${OUT}splSprPal
+
+$GRIT stamp1st.png -ftc -fh -W2 \
+    -gB8 -gb -gT! -gzl -m! -p -pn3 \
+    -o${OUT}stamp1st

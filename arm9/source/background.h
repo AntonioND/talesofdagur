@@ -112,7 +112,7 @@
 #include "Splash/splLayer3.h"
 #include "Splash/splPal.h"
 #include "Splash/splSprPal.h"
-#include "stamp1st_bin.h"
+#include "Splash/stamp1st.h"
 
 // Defines
 #define LEVEL_GND_TILES_ANIM(n, m)      (u8 *)level##n##Ground##m##_bin
