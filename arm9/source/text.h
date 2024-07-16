@@ -9,6 +9,7 @@
 
 #include "Menu/mainMenuBack.h"
 #include "Menu/mainMenuFront.h"
+#include "Menu/palGrad.h"
 #include "Misc/aButton.h"
 #include "Misc/battleGauge.h"
 #include "Misc/playerEmblem.h"
@@ -16,7 +17,6 @@
 #include "Misc/textCursor.h"
 #include "Misc/textBox.h"
 #include "Misc/textFont.h"
-#include "palGrad_bin.h"
 
 typedef enum _menuOption_
 {

@@ -17,3 +17,7 @@ $GRIT gameOver.png -ftc -fh -W2 \
 $GRIT mainMenuBack.png mainMenuFront.png -ftc -fh -W2 \
     -gB4 -gt -m -gzl -mzl -pS \
     -D${OUT} -O${OUT}mainMenuPal
+
+$GRIT palGrad.png -ftc -fh -W2 \
+    -gB16 -gb \
+    -o${OUT}palGrad

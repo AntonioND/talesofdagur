@@ -794,7 +794,7 @@ void handleHBlank()
         case LEVELMODE_MENU_START:
         case LEVELMODE_MENU_CHOICE:
         case LEVELMODE_MENU_LOAD:
-            BG_PALETTE[1]     = ((u16 *)palGrad_bin)[REG_VCOUNT / 4];
+            BG_PALETTE[1]     = ((u16 *)palGradBitmap)[REG_VCOUNT / 4];
             BG_PALETTE_SUB[1] = RGB15(0, 5 + REG_VCOUNT / 7, 25);
             BG_PALETTE_SUB[2] =
                 RGB15((REG_VCOUNT - 121) / 2, (REG_VCOUNT - 121) / 2, (REG_VCOUNT - 121) / 2);

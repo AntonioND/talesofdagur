@@ -391,7 +391,7 @@ void textHandleHBlank()
     switch (textVars.curMode) {
         case TEXTMODE_IDLE:
             if (gameValues.curMode > LEVELMODE_INTRO)
-                BG_PALETTE_SUB[1] = ((u16 *)palGrad_bin)[REG_VCOUNT / 4];
+                BG_PALETTE_SUB[1] = ((u16 *)palGradBitmap)[REG_VCOUNT / 4];
             break;
         case TEXTMODE_WINDOW_UP:
         case TEXTMODE_WINDOW_DIRUP:
@@ -401,10 +401,10 @@ void textHandleHBlank()
         case TEXTMODE_WINDOW_DIRDOWN:
         case TEXTMODE_FIGUREMENU:
         case TEXTMODE_SHOP:
-            BG_PALETTE_SUB[1] = ((u16 *)palGrad_bin)[REG_VCOUNT / 4];
+            BG_PALETTE_SUB[1] = ((u16 *)palGradBitmap)[REG_VCOUNT / 4];
             if (REG_VCOUNT > 192 - (52 - textVars.scroolY))
                 BG_PALETTE_SUB[1] =
-                    ((u16 *)palGrad_bin)[REG_VCOUNT - (192 - 52) - textVars.scroolY];
+                    ((u16 *)palGradBitmap)[REG_VCOUNT - (192 - 52) - textVars.scroolY];
             break;
     }
 }
