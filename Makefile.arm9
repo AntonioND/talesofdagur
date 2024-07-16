@@ -13,8 +13,8 @@ ARM_NONE_EABI_PATH	?= $(WONDERFUL_TOOLCHAIN)/toolchain/gcc-arm-none-eabi/bin/
 
 SOURCEDIRS	:= arm9/source arm9/graphics
 INCLUDEDIRS	:= common/include arm9/graphics
-GFXDIRS		:= gfx
-BINDIRS		:= arm9/data/gfx arm9/data/msc
+GFXDIRS		:= graphics
+BINDIRS		:= arm9/data music
 AUDIODIRS	:=
 
 # Defines passed to all files

@@ -2,6 +2,6 @@
 
 set -x
 
-pushd Graphics
+pushd graphics_manual
 bash convert.sh
 popd
