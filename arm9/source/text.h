@@ -12,12 +12,12 @@
 #include "Misc/battleGauge.h"
 #include "Misc/spr16Pal.h"
 #include "Misc/textCursor.h"
+#include "Misc/textFont.h"
 #include "palGrad_bin.h"
 #include "playerEmblem_bin.h"
 #include "sprites.h"
 #include "textBoxData_bin.h"
 #include "textBoxPal_bin.h"
-#include "textFont_bin.h"
 
 typedef enum _menuOption_
 {

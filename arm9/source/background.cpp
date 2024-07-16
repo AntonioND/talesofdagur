@@ -271,9 +271,9 @@ void graphicInitMainMenu()
     REG_BG0CNT_SUB = BG_32x32 | BG_COLOR_16 | BG_MAP_BASE(5) | BG_TILE_BASE(0) | 3; // Figure HBlank
     REG_BG3CNT_SUB = BG_32x32 | BG_COLOR_16 | BG_MAP_BASE(3) | BG_TILE_BASE(2) | 1; // Text Hblank
 
-    decompressToVRAM(textFont_bin, (void *)BG_TILE_RAM(0));
     decompressToVRAM(textBoxData_bin, (void *)BG_TILE_RAM(1));
     dmaCopy(textBoxPal_bin, BG_PALETTE, 16);
+    decompressToVRAM(textFontTiles, (void *)BG_TILE_RAM(0));
     undrawRectOn((u16 *)BG_MAP_RAM(30), 0, 0, 32, 32);
     BG_PALETTE[17] = RGB15(0, 25, 25);
     BG_PALETTE[33] = RGB15(31, 0, 0);
@@ -323,7 +323,7 @@ void graphicInitSplash()
     decompressToVRAM(stamp1stBitmap, (void *)BG_BMP_RAM_SUB(2));
     dmaCopy(stamp1stPal, BG_PALETTE_SUB, stamp1stPalLen);
 
-    decompressToVRAM(textFont_bin, (void *)BG_TILE_RAM_SUB(0));
+    decompressToVRAM(textFontTiles, (void *)BG_TILE_RAM_SUB(0));
     BG_PALETTE_SUB[17] = RGB15(0, 25, 25);
     BG_PALETTE_SUB[18] = RGB15(0, 0, 0);
 
@@ -467,7 +467,7 @@ void graphicInitBattle()
     REG_BG0VOFS = 0;
 
     REG_BG1CNT = BG_32x32 | BG_COLOR_16 | BG_MAP_BASE(25) | BG_TILE_BASE(6); // Text
-    decompressToVRAM(textFont_bin, (void *)BG_TILE_RAM(6));
+    decompressToVRAM(textFontTiles, (void *)BG_TILE_RAM(6));
     BG_PALETTE[17] = RGB15(0, 20, 7);
     BG_PALETTE[18] = RGB15(0, 0, 0);
     BG_PALETTE[33] = RGB15(31, 31, 31);

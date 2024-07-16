@@ -114,7 +114,7 @@ void initText()
 
     // Decompressing...
     decompressToVRAM(textBoxData_bin, (void *)BG_TILE_RAM_SUB(0));
-    decompressToVRAM(textFont_bin, (void *)BG_TILE_RAM_SUB(1));
+    decompressToVRAM(textFontTiles, (void *)BG_TILE_RAM_SUB(1));
     decompressToVRAM(playerEmblem_bin, SPRITE_GFX_SUB + 16 * 16 / 2);
 
     // Text colors
