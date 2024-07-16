@@ -11,7 +11,7 @@ rm -rf ${OUT}
 mkdir -p ${OUT}
 
 # This should be restricted to 16 colors
-$GRIT aButton.bmp battleGauge.bmp textCursor.bmp -ftc -fh -W2 \
+$GRIT aButton.png battleGauge.bmp textCursor.bmp -ftc -fh -W2 \
     -gB4 -gt -gTFF00FF -m! -mR! -pS \
     -D${OUT} -O${OUT}spr16Pal
 
