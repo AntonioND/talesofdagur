@@ -67,7 +67,7 @@ ifneq ($(BINDIRS),)
     INCLUDEDIRS	+= $(addprefix $(BUILDDIR)/,$(BINDIRS))
 endif
 ifneq ($(GFXDIRS),)
-    SOURCES_BMP	:= $(shell find -L $(GFXDIRS) -name "*.bmp")
+    SOURCES_PNG	:= $(shell find -L $(GFXDIRS) -name "*.png")
     INCLUDEDIRS	+= $(addprefix $(BUILDDIR)/,$(GFXDIRS))
 endif
 ifneq ($(AUDIODIRS),)
@@ -122,11 +122,11 @@ LDFLAGS		:= $(ARCH) $(LIBDIRSFLAGS) -Wl,-Map,$(MAP) $(DEFINES) \
 
 OBJS_ASSETS	:= $(addsuffix .o,$(addprefix $(BUILDDIR)/,$(SOURCES_BIN))) \
 		   $(addsuffix .o,$(addprefix $(BUILDDIR)/,$(SOURCES_MOD))) \
-		   $(addsuffix .o,$(addprefix $(BUILDDIR)/,$(SOURCES_BMP)))
+		   $(addsuffix .o,$(addprefix $(BUILDDIR)/,$(SOURCES_PNG)))
 
 HEADERS_ASSETS	:= $(patsubst %.bin,%_bin.h,$(addprefix $(BUILDDIR)/,$(SOURCES_BIN))) \
 		   $(patsubst %.mod,%_mod.h,$(addprefix $(BUILDDIR)/,$(SOURCES_MOD))) \
-		   $(patsubst %.bmp,%.h,$(addprefix $(BUILDDIR)/,$(SOURCES_BMP)))
+		   $(patsubst %.png,%.h,$(addprefix $(BUILDDIR)/,$(SOURCES_PNG)))
 
 ifneq ($(SOURCES_AUDIO),)
     OBJS_ASSETS		+= $(SOUNDBANKDIR)/soundbank.c.o
@@ -202,12 +202,12 @@ $(BUILDDIR)/%.mod.o $(BUILDDIR)/%_mod.h : %.mod
 	$(V)$(BLOCKSDS)/tools/bin2c/bin2c $< $(@D)
 	$(V)$(CC) $(CFLAGS) -MMD -MP -c -o $(BUILDDIR)/$*.mod.o $(BUILDDIR)/$*_mod.c
 
-$(BUILDDIR)/%.bmp.o $(BUILDDIR)/%.h : %.bmp %.grit
+$(BUILDDIR)/%.png.o $(BUILDDIR)/%.h : %.png %.grit
 	@echo "  GRIT.9  $<"
 	@$(MKDIR) -p $(@D)
 	$(V)$(BLOCKSDS)/tools/grit/grit $< -ftc -W1 -o$(BUILDDIR)/$*
-	$(V)$(CC) $(CFLAGS) -MMD -MP -c -o $(BUILDDIR)/$*.bmp.o $(BUILDDIR)/$*.c
-	$(V)touch $(BUILDDIR)/$*.bmp.o $(BUILDDIR)/$*.h
+	$(V)$(CC) $(CFLAGS) -MMD -MP -c -o $(BUILDDIR)/$*.png.o $(BUILDDIR)/$*.c
+	$(V)touch $(BUILDDIR)/$*.png.o $(BUILDDIR)/$*.h
 
 $(SOUNDBANKDIR)/soundbank.h: $(SOURCES_AUDIO)
 	@echo "  MMUTIL  $^"
