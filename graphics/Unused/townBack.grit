@@ -1,0 +1,2 @@
+# 4 bit tilemap, magenta is transparent, no map, no tileset optimization, no compression
+-gB4 -gt -gTFF00FF -mR! -m! -gz!
