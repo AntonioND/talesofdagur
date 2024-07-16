@@ -10,7 +10,8 @@ OUT=${GRAPHICS}/Misc/
 rm -rf ${OUT}
 mkdir -p ${OUT}
 
-$GRIT battleGauge.bmp textCursor.bmp -ftc -fh -W2 \
+# This should be restricted to 16 colors
+$GRIT aButton.bmp battleGauge.bmp textCursor.bmp -ftc -fh -W2 \
     -gB4 -gt -gTFF00FF -m! -mR! -pS \
     -D${OUT} -O${OUT}spr16Pal
 

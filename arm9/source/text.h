@@ -3,11 +3,13 @@
 
 #include <string>
 
-#include "aButton_bin.h"
 #include "background.h"
 #include "main.h"
+#include "sprites.h"
+
 #include "Menu/mainMenuBack.h"
 #include "Menu/mainMenuFront.h"
+#include "Misc/aButton.h"
 #include "Misc/battleGauge.h"
 #include "Misc/playerEmblem.h"
 #include "Misc/spr16Pal.h"
@@ -15,7 +17,6 @@
 #include "Misc/textBox.h"
 #include "Misc/textFont.h"
 #include "palGrad_bin.h"
-#include "sprites.h"
 
 typedef enum _menuOption_
 {

@@ -107,7 +107,7 @@ void initText()
 {
     // Those things were so small, it was stupid to compress...
     dmaCopy(textBoxPal, BG_PALETTE_SUB, 16);
-    dmaCopy(aButton_bin, SPRITE_GFX_SUB, aButton_bin_size);
+    dmaCopy(aButtonTiles, SPRITE_GFX_SUB, aButtonTilesLen);
     dmaCopy(playerEmblemPal, SPRITE_PALETTE_SUB, playerEmblemPalLen);
     dmaCopy(spr16PalPal, SPRITE_PALETTE_SUB + 16 * 15, spr16PalPalLen);
     dmaCopy(textCursorTiles, SPRITE_GFX_SUB + 16 * 16 / 2 + 64 * 64 / 2, textCursorTilesLen);
