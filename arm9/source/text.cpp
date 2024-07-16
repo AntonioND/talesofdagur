@@ -108,14 +108,14 @@ void initText()
     // Those things were so small, it was stupid to compress...
     dmaCopy(textBoxPal, BG_PALETTE_SUB, 16);
     dmaCopy(aButton_bin, SPRITE_GFX_SUB, aButton_bin_size);
-    dmaCopy(emmlemPal_bin, SPRITE_PALETTE_SUB, emmlemPal_bin_size);
+    dmaCopy(playerEmblemPal, SPRITE_PALETTE_SUB, playerEmblemPalLen);
     dmaCopy(spr16PalPal, SPRITE_PALETTE_SUB + 16 * 15, spr16PalPalLen);
     dmaCopy(textCursorTiles, SPRITE_GFX_SUB + 16 * 16 / 2 + 64 * 64 / 2, textCursorTilesLen);
 
     // Decompressing...
     decompressToVRAM(textBoxTiles, (void *)BG_TILE_RAM_SUB(0));
     decompressToVRAM(textFontTiles, (void *)BG_TILE_RAM_SUB(1));
-    decompressToVRAM(playerEmblem_bin, SPRITE_GFX_SUB + 16 * 16 / 2);
+    decompressToVRAM(playerEmblemTiles, SPRITE_GFX_SUB + 16 * 16 / 2);
 
     // Text colors
     BG_PALETTE_SUB[17] = RGB15(31, 31, 31);

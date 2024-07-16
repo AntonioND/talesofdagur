@@ -14,6 +14,11 @@ $GRIT battleGauge.bmp textCursor.bmp -ftc -fh -W2 \
     -gB4 -gt -gTFF00FF -m! -mR! -pS \
     -D${OUT} -O${OUT}spr16Pal
 
+# Reserve the last 16 colors of the 256 color palette for other sprites
+$GRIT playerEmblem.bmp -ftc -fh -W2 \
+    -gB8 -gt -gTFF00FF -gzl -m! -mR! -pn240 \
+    -o${OUT}playerEmblem
+
 $GRIT textBox.bmp -ftc -fh -W2 \
     -gB4 -gt -gTFF00FF -gzl -m! -mR! -pn16 \
     -o${OUT}textBox
