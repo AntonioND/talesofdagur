@@ -4,7 +4,7 @@ set -x
 
 GRIT=/opt/blocksds/core/tools/grit/grit
 
-GRAPHICS=../../arm9/graphics/
+GRAPHICS=../../build/graphics/
 OUT=${GRAPHICS}/Misc/
 
 rm -rf ${OUT}
