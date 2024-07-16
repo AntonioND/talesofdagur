@@ -106,14 +106,14 @@ void clearText(int x, int y, int dimX, int dimY)
 void initText()
 {
     // Those things were so small, it was stupid to compress...
-    dmaCopy(textBoxPal_bin, BG_PALETTE_SUB, 16);
+    dmaCopy(textBoxPal, BG_PALETTE_SUB, 16);
     dmaCopy(aButton_bin, SPRITE_GFX_SUB, aButton_bin_size);
     dmaCopy(emmlemPal_bin, SPRITE_PALETTE_SUB, emmlemPal_bin_size);
     dmaCopy(spr16PalPal, SPRITE_PALETTE_SUB + 16 * 15, spr16PalPalLen);
     dmaCopy(textCursorTiles, SPRITE_GFX_SUB + 16 * 16 / 2 + 64 * 64 / 2, textCursorTilesLen);
 
     // Decompressing...
-    decompressToVRAM(textBoxData_bin, (void *)BG_TILE_RAM_SUB(0));
+    decompressToVRAM(textBoxTiles, (void *)BG_TILE_RAM_SUB(0));
     decompressToVRAM(textFontTiles, (void *)BG_TILE_RAM_SUB(1));
     decompressToVRAM(playerEmblem_bin, SPRITE_GFX_SUB + 16 * 16 / 2);
 

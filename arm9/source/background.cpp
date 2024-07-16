@@ -271,9 +271,9 @@ void graphicInitMainMenu()
     REG_BG0CNT_SUB = BG_32x32 | BG_COLOR_16 | BG_MAP_BASE(5) | BG_TILE_BASE(0) | 3; // Figure HBlank
     REG_BG3CNT_SUB = BG_32x32 | BG_COLOR_16 | BG_MAP_BASE(3) | BG_TILE_BASE(2) | 1; // Text Hblank
 
-    decompressToVRAM(textBoxData_bin, (void *)BG_TILE_RAM(1));
-    dmaCopy(textBoxPal_bin, BG_PALETTE, 16);
     decompressToVRAM(textFontTiles, (void *)BG_TILE_RAM(0));
+    decompressToVRAM(textBoxTiles, (void *)BG_TILE_RAM(1));
+    dmaCopy(textBoxPal, BG_PALETTE, 16);
     undrawRectOn((u16 *)BG_MAP_RAM(30), 0, 0, 32, 32);
     BG_PALETTE[17] = RGB15(0, 25, 25);
     BG_PALETTE[33] = RGB15(31, 0, 0);
