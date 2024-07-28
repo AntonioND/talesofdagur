@@ -1,3 +1,7 @@
+// SPDX-License-Identifier: WTFPL
+//
+// SPDX-FileContributor: LiraNuna, 2006
+
 #ifndef __DATABASE_H__
 #define __DATABASE_H__
 

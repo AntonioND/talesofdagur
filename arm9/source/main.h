@@ -1,3 +1,7 @@
+// SPDX-License-Identifier: WTFPL
+//
+// SPDX-FileContributor: LiraNuna, 2006
+
 #ifndef __MAIN_H__
 #define __MAIN_H__
 

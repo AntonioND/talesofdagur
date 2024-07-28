@@ -1,3 +1,8 @@
+// SPDX-License-Identifier: WTFPL
+//
+// SPDX-FileContributor: LiraNuna, 2006
+// SPDX-FileContributor: Antonio Niño Díaz, 2024
+
 #include <algorithm>
 
 #include "handlers.h"

@@ -1,3 +1,8 @@
+// SPDX-License-Identifier: WTFPL
+//
+// SPDX-FileContributor: LiraNuna, 2006
+// SPDX-FileContributor: Antonio Niño Díaz, 2024
+
 #include "Sound9.h"
 #include "background.h"
 #include "events.h"

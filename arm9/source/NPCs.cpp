@@ -1,3 +1,7 @@
+// SPDX-License-Identifier: WTFPL
+//
+// SPDX-FileContributor: LiraNuna, 2006
+
 #include <list>
 #include <vector>
 
