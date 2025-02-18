@@ -4,6 +4,7 @@
 // SPDX-FileContributor: Antonio Niño Díaz, 2024
 
 #include <algorithm>
+#include <stdarg.h>
 
 #include "handlers.h"
 #include "text.h"
