@@ -2,7 +2,7 @@
 
 set -x
 
-GRIT=/opt/blocksds/core/tools/grit/grit
+GRIT=/opt/wonderful/thirdparty/blocksds/core/tools/grit/grit
 
 GRAPHICS=../../build/graphics/
 OUT=${GRAPHICS}/Levels/
