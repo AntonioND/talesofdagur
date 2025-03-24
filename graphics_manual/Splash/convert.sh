@@ -2,7 +2,8 @@
 
 set -x
 
-GRIT=/opt/blocksds/core/tools/grit/grit
+BLOCKSDS="${BLOCKSDS:-/opt/blocksds/core/}"
+GRIT=$BLOCKSDS/tools/grit/grit
 
 GRAPHICS=../../build/graphics/
 OUT=${GRAPHICS}/Splash/
