@@ -729,8 +729,13 @@ bool saveGame(int saveSlot)
         fclose(outputBuffer);
         return true;
     } else {
-        writeSRAM((u8 *)&gameData, sizeof(saveData) * saveSlot, sizeof(saveData));
-        return true;
+        if (isDSiMode()) {
+            // We can't access Slot-2 SRAM in DSi mode
+            return false;
+        } else {
+            writeSRAM((u8 *)&gameData, sizeof(saveData) * saveSlot, sizeof(saveData));
+            return true;
+        }
     }
 }
 
@@ -755,9 +760,15 @@ bool loadSavedGame(int saveSlot, pSaveData gameData)
 
         return false;
     } else {
-        gameData->isLoaded = false;
-        readSRAM((u8 *)gameData, sizeof(saveData) * saveSlot, sizeof(saveData));
-        return gameData->isLoaded;
+        if (isDSiMode()) {
+            // We can't access Slot-2 SRAM in DSi mode
+            gameData->isLoaded = false;
+            return false;
+        } else {
+            gameData->isLoaded = false;
+            readSRAM((u8 *)gameData, sizeof(saveData) * saveSlot, sizeof(saveData));
+            return gameData->isLoaded;
+        }
     }
 }
 
