@@ -18,6 +18,8 @@ volatile u16 HKEYS        = 0;
 // Main entry point for the program
 int main()
 {
+    defaultExceptionHandler();
+
     // Init the DS
     powerOn(POWER_ALL_2D);
 
